@@ -9,7 +9,6 @@ class Vehicule extends Component
         super(props);
         this.state = 
         { 
-            key: props.key,
             fabricant: props.fabricant || "N/A",
             modele: props.modele || "N/A",
             annee: props.annee || NaN,

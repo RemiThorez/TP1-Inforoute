@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import './App.css';  // Assurez-vous que le chemin vers le fichier CSS est correct
 import GestionVehicule from './gestionVehicule/GestionVehicule';
 import Vehicule from './gestionVehicule/Vehicule';
-import ManufactureVehicule from './gestionVehicule/ManufactureVehicule';
 
 const App = () => {
     const [courriel, setCourriel] = useState('');

@@ -1,5 +1,6 @@
 import React, {Component, useState} from 'react'
 import Vehicule from './Vehicule';
+import ManufactureVehicule from './ManufactureVehicule';
 
 
 class GestionVehicule extends Component
@@ -10,19 +11,27 @@ class GestionVehicule extends Component
         this.state = 
         { 
             cacherVehicule: false,
-            vehicules: props.vehicules 
+            vehicules: props.vehicules || []
         }
+
+        this.manufactureVehicule = new ManufactureVehicule();
     }
 
 
     creerVehicule = () =>
     {
-
+        const vehicule = this.manufactureVehicule.CreerVehicule("Suzuki","SX4","2008",++this.state.vehicules.length)
+        
+        this.setState((state => ({vehicules:[...state.vehicules, vehicule]})));
     }
 
-    creerVehiculeVIN = () =>
+    creerVehiculeVIN = async () =>
     {
-        
+        const vehicule = await this.manufactureVehicule.CreerVehiculeVIN("JS2YB5A20A6300765", ++this.state.vehicules.length)
+        if(vehicule)
+        {
+            this.setState((state => ({vehicules:[...state.vehicules, vehicule]})));
+        }
     }
 
     render()
