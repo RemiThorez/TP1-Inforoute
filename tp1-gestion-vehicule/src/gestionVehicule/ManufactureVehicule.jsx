@@ -15,6 +15,12 @@ class ManufactureVehicule
     {
         return <Vehicule key={key} fabricant={fabricant} modele={modele} annee={annee} />
     };
+
+    CreerVehiculeManquant(fabricant, modele, annee,key)
+    {
+        
+        return <Vehicule key={key} fabricant={fabricant} modele={modele} annee={annee} /> 
+    }
 }
 
 export default ManufactureVehicule
