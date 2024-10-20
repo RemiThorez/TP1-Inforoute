@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './App.css';  // Assurez-vous que le chemin vers le fichier CSS est correct
-import './gestionVehicule/Vehicule'
+import GestionVehicule from './gestionVehicule/GestionVehicule';
 import Vehicule from './gestionVehicule/Vehicule';
 
 const App = () => {
@@ -30,13 +30,13 @@ const App = () => {
 
     return (
         <>
-            <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} ></Vehicule>
-            <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} ></Vehicule>
-            <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} ></Vehicule>
-            <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} ></Vehicule>
-            <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} ></Vehicule>
-            <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} ></Vehicule>
-        
+            <GestionVehicule vehicules={
+                [<Vehicule fabricant="Suzuki" modele="SX4" annee={2010} />,
+                <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} />,
+                <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} />,
+                <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} />,
+                <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} />]}>
+            </GestionVehicule>
         </>
         /*<div className="login-container">
             <h1>Connexion</h1>
