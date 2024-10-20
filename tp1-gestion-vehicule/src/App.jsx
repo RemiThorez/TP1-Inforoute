@@ -32,8 +32,8 @@ const App = () => {
         <>
             <GestionVehicule vehicules={
                 [<Vehicule fabricant="Suzuki" modele="SX4" annee={2010} />,
-                <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} />,
-                <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} />,
+                <Vehicule fabricant="Suzuki" modele="SX4" annee={2008} />,
+                <Vehicule fabricant="Suzuki" modele="SX4" annee={2009} />,
                 <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} />,
                 <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} />]}>
             </GestionVehicule>

@@ -19,7 +19,7 @@ class GestionVehicule extends Component
     {
         return(
             <>
-                {this.state.vehicules.map((vehicule,i) => <Vehicule key={i} fabricant={vehicule.fabricant} modele={vehicule.modele} annee={vehicule.annee}/>)}
+                {this.state.vehicules.map((vehicule) => vehicule)}
             </>
         );
     }
