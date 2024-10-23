@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './Client.css';
+import Vehicule from './gestionVehicule/Vehicule';
+import GestionVehicule from './gestionVehicule/GestionVehicule';
 
 const PageClient = () => {
   const [ongletActif, setOngletActif] = useState('profil');
@@ -36,6 +38,7 @@ const PageClient = () => {
   const formEstValide = nom && prenom && telephone && adresse; // Validation du formulaire
 
   return (
+    <div>
     <div className="client-container">
       <nav className="tabs">
         <ul>
@@ -152,6 +155,15 @@ const PageClient = () => {
         )}
       </div>
     </div>
+            <div>
+            <GestionVehicule vehicules={
+                [<Vehicule fabricant="Suzuki" modele="SX4" annee={2010} key={0} />,
+                <Vehicule fabricant="Suzuki" modele="SX4" annee={2008} key={1}/>,
+                <Vehicule fabricant="Suzuki" modele="SX4" annee={2009} key={2}/>,
+                <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} key={3}/>]}>
+            </GestionVehicule>
+        </div>
+        </div>
   );
 };
 

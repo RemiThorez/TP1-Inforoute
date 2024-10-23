@@ -29,15 +29,7 @@ const App = () => {
     };
 
     return (
-        <>
-            <GestionVehicule vehicules={
-                [<Vehicule fabricant="Suzuki" modele="SX4" annee={2010} key={0} />,
-                <Vehicule fabricant="Suzuki" modele="SX4" annee={2008} key={1}/>,
-                <Vehicule fabricant="Suzuki" modele="SX4" annee={2009} key={2}/>,
-                <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} key={3}/>]}>
-            </GestionVehicule>
-        </>
-        /*<div className="login-container">
+        <div className="login-container">
             <h1>Connexion</h1>
             <form onSubmit={handleConnexion} className="login-form">
                 <input type="email" value={courriel} onChange={e => setCourriel(e.target.value)} placeholder="Courriel" required />
@@ -46,7 +38,7 @@ const App = () => {
                 {erreur && <p className="error-message">{erreur}</p>}
                 <button type="button" onClick={handleInscription} className="signup-button">Inscrivez-vous</button>
             </form>
-        </div>*/
+        </div>
     );
 };
 
