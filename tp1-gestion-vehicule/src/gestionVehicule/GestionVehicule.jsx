@@ -21,7 +21,7 @@ class GestionVehicule extends Component
     }
 
 
-    gererBtnAjouterVehicule = (e) =>
+    gererBtnAjouterVehicule = () =>
     {
         this.setState({
             ajouterVehiculeActif: true,
@@ -29,7 +29,7 @@ class GestionVehicule extends Component
             ajouterVehiculeComplexeActif: false
         })
     }
-    gererBtnAjouterVehiculeVIN = (e) =>
+    gererBtnAjouterVehiculeVIN = () =>
     {
         this.setState({
             ajouterVehiculeActif: false,
@@ -37,7 +37,7 @@ class GestionVehicule extends Component
             ajouterVehiculeComplexeActif: false
         })
     }
-    gererBtnAjouterVehiculeComplexe = (e) =>
+    gererBtnAjouterVehiculeComplexe = () =>
     {
         this.setState({
             ajouterVehiculeActif: false,
@@ -46,22 +46,44 @@ class GestionVehicule extends Component
         })
     }
 
-    creerVehicule = (e) =>
+    gererBtnAnnulerAjoutVehicule = () =>
     {
-        const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,++this.state.vehicules.length)
-        
-        this.setState((state => ({vehicules:[...state.vehicules, vehicule]})));
+        this.setState({ajouterVehiculeActif: false})
     }
-    //"JS2YB5A20A6300765"
-    creerVehiculeVIN = async (e) =>
+    gererBtnAnnulerAjoutVehiculeVIN = () =>
     {
-        const vehicule = await this.manufactureVehicule.CreerVehiculeVIN(vin, ++this.state.vehicules.length)
-        if(vehicule)
-        {
-            this.setState((state => ({vehicules:[...state.vehicules, vehicule]})));
-        }
+        this.setState({ajouterVehiculeVINActif: false})
+    }
+    gererBtnAnnulerAjoutVehiculeComplexe = () =>
+    {
+        this.setState({ajouterVehiculeComplexeActif: false})
     }
 
+    creerVehicule = (e) =>
+    {
+        e.preventDefault();
+        const donneeFormulaire = new FormData(e.target);
+        const fabricant = donneeFormulaire.get("fabricant");
+        const modele = donneeFormulaire.get("modele");
+        const annee = donneeFormulaire.get("annee");
+        const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,++this.state.vehicules.length)
+        
+        this.setState((state => ({vehicules:[...state.vehicules, vehicule], ajouterVehiculeActif: false})));
+    }
+    //"JS2YB5A20A6300765"
+     creerVehiculeVIN = async (e) =>
+    {
+        e.preventDefault();
+        const donneeFormulaire = new FormData(e.target);
+        const vin = donneeFormulaire.get("vin");
+
+        const vehicule = await this.manufactureVehicule.CreerVehiculeVIN(vin, ++this.state.vehicules.length)
+
+        if(vehicule)
+        {
+            this.setState((state => ({vehicules:[...state.vehicules, vehicule], ajouterVehiculeVINActif: false})));
+        }
+    }
 
     render()
     {
@@ -75,42 +97,45 @@ class GestionVehicule extends Component
         return(
             <>
                 <div>
-                    <button onClick={this.creerVehicule}>Ajouter véhicule</button>
-                    <button onClick={this.creerVehiculeVIN}>Ajouter véhicule avec VIN</button>
-                    <button onClick={undefined}>Ajouter véhicule complexe</button>
+                    <button onClick={this.gererBtnAjouterVehicule}>Ajouter véhicule</button>
+                    <button onClick={this.gererBtnAjouterVehiculeVIN}>Ajouter véhicule avec VIN</button>
+                    <button onClick={this.gererBtnAjouterVehiculeComplexe}>Ajouter véhicule complexe</button>
                 </div>
            
                 <div> 
                     {this.state.ajouterVehiculeActif && 
-                    <form>
+                    <form onSubmit={this.creerVehicule}>
                         <h2>Ajouter véhicule</h2>
                         <label>Fabricant: </label>
-                        <input type="text" name='fabricant' value=""></input>
+                        <input type="text" name='fabricant'></input>
                         <label>Modèle: </label>
-                        <input type="text" name='modele' value=""></input>
+                        <input type="text" name='modele'></input>
                         <label>Année de fabrication: </label>
-                        <select name="annee" value="">
+                        <select name="annee">
                                     {optionsAnnee}
                         </select>
-                        <button type="submit" onClick={this.creerVehicule}>Ajouter</button>
+                        <button type="submit">Ajouter</button>
+                        <button onClick={this.gererBtnAnnulerAjoutVehicule}>Annuler</button>
                     </form>}
                 </div>
             
                 <div>
                     {this.state.ajouterVehiculeVINActif &&
-                    <form>
+                    <form onSubmit={this.creerVehiculeVIN}>
                         <h2>Ajouter véhicule avec VIN</h2>
                         <label>VIN du véhicule: </label>
-                        <input type="text" name='vin' value=""></input>
-                        <button type="submit" onClick={this.creerVehiculeVIN}>Ajouter</button>
+                        <input type="text" name='vin'></input>
+                        <button type="submit">Ajouter</button>
+                        <button onClick={this.gererBtnAnnulerAjoutVehiculeVIN}>Annuler</button>
                     </form>}
                 </div>
 
                 <div>
                     {this.state.ajouterVehiculeComplexeActif &&
-                    <form>
+                    <form onSubmit={""}>
                         <h2>Ajouter véhicule avec informations manquantes</h2>
-                        <button type="submit" onClick={undefined}>Ajouter</button>
+                        <button type="submit">Ajouter</button>
+                        <button onClick={this.gererBtnAnnulerAjoutVehiculeComplexe}>Annuler</button>
                     </form>}
                 </div>
                 {this.state.vehicules.map((vehicule) => vehicule)}
