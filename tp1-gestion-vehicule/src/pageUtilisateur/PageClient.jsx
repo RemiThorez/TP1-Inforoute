@@ -1,181 +1,114 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import '../css/Client.css';
 import GestionVehicule from '../gestionVehicule/GestionVehicule';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
-const PageClient = () => {
-  const [ongletActif, setOngletActif] = useState('profil');
-  const [nom, setNom] = useState('');
-  const [prenom, setPrenom] = useState('');
-  const [telephone, setTelephone] = useState('');
-  const [adresse, setAdresse] = useState('');
-  const [rendezVous, setRendezVous] = useState([]);
-  const [messageSauvegarde, setMessageSauvegarde] = useState('');
-  const [vehicule, setVehicule] = useState('');
-  const [symptomes, setSymptomes] = useState('');
-  const [date, setDate] = useState('');
-  const [heure, setHeure] = useState('');
-  const vehicules = axios.get("https://dummyjson.com/c/8a3c-e974-4034-a362");
+class PageClient extends Component
+{
+    constructor(props)
+    {
+        super(props);
+        this.state =
+        {
+            ongletActif: "modifierProfil"
+        };
 
-  const prendreRendezVous = (mecanicien) => {
-    const nouveauRendezVous = {
-      mecanicien,
-      vehicule,
-      symptomes,
-      date,
-      heure,
-      statut: 'En attente',
-    };
-    setRendezVous([...rendezVous, nouveauRendezVous]);
-    setMessageSauvegarde('Rendez-vous pris avec succès !');
-  };
-
-  const sauvegarderProfil = () => {
-    if (nom && prenom && telephone && adresse) {
-      setMessageSauvegarde('Profil sauvegardé avec succès !');
+        // Appelle avec redux-thunk afin de peupler les différents dropdown button
     }
-  };
 
-  const formEstValide = nom && prenom && telephone && adresse; // Validation du formulaire
+    sauvegarderNouvelleInfo = (e) =>
+    {
+        
+    }
 
-  return (
-    <div>
-    <div className="client-container">
-      <nav className="tabs">
-        <ul>
-          <li className={ongletActif === 'profil' ? 'active' : ''} onClick={() => setOngletActif('profil')}>
-            Modifier mon profil
-          </li>
-          <li className={ongletActif === 'prendreRendezVous' ? 'active' : ''} onClick={() => setOngletActif('prendreRendezVous')}>
-            Prendre un rendez-vous
-          </li>
-          <li className={ongletActif === 'annulerRendezVous' ? 'active' : ''} onClick={() => setOngletActif('annulerRendezVous')}>
-            Annuler un rendez-vous
-          </li>
-          <li className={ongletActif === 'gestionVehicule' ? 'active' : ''} onClick={() => setOngletActif('gestionVehicule')}>
-            Gérer mes véhicules
-          </li>
-        </ul>
-      </nav>
+    envoiDemandeRdv = (e) =>
+    {
 
-      <div className="content">
-        {ongletActif === 'profil' && (
-          <div className="profile-tab">
-            <h3>Modifier mon profil</h3>
-            <input
-              type="text"
-              placeholder="Entrez le nouveau nom"
-              value={nom}
-              onChange={(e) => setNom(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Entrez le nouveau prénom"
-              value={prenom}
-              onChange={(e) => setPrenom(e.target.value)}
-              required
-            />
-            <input
-              type="tel"
-              placeholder="Entrez le nouveau numéro de téléphone"
-              value={telephone}
-              onChange={(e) => setTelephone(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Entrez la nouvelle adresse"
-              value={adresse}
-              onChange={(e) => setAdresse(e.target.value)}
-              required
-            />
-            <button onClick={sauvegarderProfil} disabled={!formEstValide}>
-              Sauvegarder
-            </button>
-            {messageSauvegarde && <p style={{ color: 'green' }}>{messageSauvegarde}</p>}
-          </div>
-        )}
+    }
 
-        {ongletActif === 'prendreRendezVous' && (
-          <div className="rendezvous-tab">
-            <h3>Prendre un rendez-vous</h3>
+    chargerHoraireMecano = (e) =>
+    {
 
-            <label>Véhicule :</label>
-            <select value={vehicule} onChange={(e) => setVehicule(e.target.value)} required>
-              <option value="">Sélectionner un véhicule</option>
-              <option value="Voiture">Voiture</option>
-              <option value="Moto">Moto</option>
-              <option value="Camion">Camion</option>
-            </select>
+    }
 
-            <label>Date :</label>
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+    modifierOngletActif = (e) =>
+    {
+        this.setState({ongletActif: e.target.name});
+    }
 
-            <label>Heure :</label>
-            <input type="time" value={heure} onChange={(e) => setHeure(e.target.value)} required />
+    render()
+    {
+        return (
+        <div>
+        <div className="client-container">
+          <nav className="tabs">
+                <button name='modifierProfil' onClick={this.modifierOngletActif}>Modifier mon profils</button>
+                <button name='prendreRdv' onClick={this.modifierOngletActif}>Prise de rendez-vous</button>
+                <button name='mesRdvs' onClick={this.modifierOngletActif}>Mes rendez-vous</button>
+                <button name='gestionVehicule' onClick={this.modifierOngletActif}>Mes véhicules</button>
+          </nav>
+    
+          <div className="content">
+            {this.state.ongletActif === 'modifierProfil' && (
+              <div className="profile-tab">
+                <h3>Modifier mon profil</h3>
 
-            <label>Symptômes / Services :</label>
-            <textarea
-              placeholder="Entrez les symptômes ou les services souhaités (changement d’huile, remplacement des pneus, etc.)"
-              value={symptomes}
-              onChange={(e) => setSymptomes(e.target.value)}
-              required
-            />
-
-            <button onClick={() => prendreRendezVous('Mécanicien X')}>
-              Confirmer le rendez-vous
-            </button>
-
-            {messageSauvegarde && <p style={{ color: 'green' }}>{messageSauvegarde}</p>}
-          </div>
-        )}
-
-        {ongletActif === 'annulerRendezVous' && (
-          <div className="cancel-tab">
-            <h3>Annuler un rendez-vous</h3>
-            {rendezVous.length > 0 ? (
-              rendezVous.map((rv, index) => (
-                <div key={index}>
-                  <p>Mécanicien : {rv.mecanicien}</p>
-                  <p>Véhicule : {rv.vehicule}</p>
-                  <p>Date : {rv.date}</p>
-                  <p>Heure : {rv.heure}</p>
-                  <p>Statut : {rv.statut}</p>
-                  <button
-                    onClick={() => {
-                      const updatedRendezVous = rendezVous.filter((_, i) => i !== index);
-                      setRendezVous(updatedRendezVous);
-                    }}
-                  >
-                    Annuler
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p>Vous n'avez aucun rendez-vous.</p>
+                <form onSubmit={this.sauvegarderNouvelleInfo}>
+                    <input type="text"placeholder="Entrez le nouveau nom" name="nom" required/>
+                    <input type="text"placeholder="Entrez le nouveau prénom" name="prenom" required/>
+                    <input type="tel"placeholder="Entrez le nouveau numéro de téléphone" name="tel" required/>
+                    <input type="text"placeholder="Entrez la nouvelle adresse" name="adresse" required/>
+                    <button type="submit">Sauvegarder</button>
+                </form>
+              </div>
             )}
-          </div>
-        )}
+    
+            {this.state.ongletActif === 'prendreRdv' && (
+              <div className="rendezvous-tab">
+                <h3>Prendre un rendez-vous</h3>
 
-        {ongletActif === 'gestionVehicule' &&
-            <div>
-            <h3>Mes véhicules</h3>
-            <div>
-            <GestionVehicule argsVehicules={vehicules}></GestionVehicule>
-          </div>
-          </div>
-        }
-      </div>
-    </div>
+                <form onSubmit={this.envoiDemandeRdv}>
+                    <label>Véhicule :</label>
+                    <select name='vehicule' required>
+                        {this.props.vehicules.map((vehicule) => (<option key={vehicule.idVehicule}> {vehicule.fabricant}, {vehicule.modele}, {vehicule.annee}</option>))}
+                    </select>
 
+                    <label>Mécanicien</label>
+                    <select name='mecanicien' value={""} onChange={this.chargerHoraireMecano}>
+                        {/* this.state.mecanicien? depend de comment fonctionne thunk */}
+                    </select>
+                
+                    <label>Besoin :</label>
+                    <textarea name="besoin" placeholder="Entrez les symptômes ou les services souhaités (changement d’huile, remplacement des pneus, etc.)"required/>
+                
+                    <button type="submit">Envoyer demande</button>
+                </form>
+              </div>
+            )}
+             {this.state.ongletActif === 'mesRdvs' && (
+              <div className="rendezvous-tab">
+                <h3>Mes rendez-vous</h3>
+              </div>
+            )}
+            {this.state.ongletActif === 'gestionVehicule' &&
+                <div>
+                <h3>Mes véhicules</h3>
+                <div>
+                <GestionVehicule /*argsVehicules={vehicules}*/></GestionVehicule>
+              </div>
+              </div>
+            }
+          </div>
         </div>
-  );
-};
-
+    
+            </div>
+      );
+    }
+}
+     
 const mapStateToProps = (state) => ({
-  vehicules: state.vehicules,
+    vehicules: state.vehicules,
 });
 
 export default connect(mapStateToProps)(PageClient);
+    
