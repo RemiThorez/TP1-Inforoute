@@ -6,6 +6,7 @@ const etatInitial =
     supprimer: false,
     vehicules: [],
     indexVehicule: 0,
+    user: null,
 }
 
 const reducer = (state = etatInitial,action) =>
@@ -24,6 +25,8 @@ const reducer = (state = etatInitial,action) =>
             return{...state, vehicules: state.vehicules.filter(v=> v.idVehicule !== action.payload)}
         case "SET_INDEX":
             return{...state, indexVehicule:action.payload}
+        case "SET_USER":
+            return{...state, user:action.payload}        
         default:
             return state;
     }

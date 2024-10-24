@@ -16,9 +16,18 @@ class PageClient extends Component
         // Appelle avec redux-thunk afin de peupler les différents dropdown button
     }
 
-    sauvegarderNouvelleInfo = (e) =>
+    sauvegarderNouvelleInfo = async (e) =>
     {
-        
+        const donneeFormulaire = new FormData(e);
+        e.preventDefault();
+        const utilisateur = {
+            lastName: donneeFormulaire.get('nom'),
+            firstName: donneeFormulaire.get('prenom'),
+            phone: donneeFormulaire.get('tel'),
+            address: { adresse: donneeFormulaire.get('adresse') },
+        };
+        const reponse = await axios.patch(`https://dummyjson.com/users/${this.props.user.id}`,utilisateur);
+        console.log(reponse);
     }
 
     envoiDemandeRdv = (e) =>
@@ -108,6 +117,7 @@ class PageClient extends Component
      
 const mapStateToProps = (state) => ({
     vehicules: state.vehicules,
+    user: state.user,
 });
 
 export default connect(mapStateToProps)(PageClient);

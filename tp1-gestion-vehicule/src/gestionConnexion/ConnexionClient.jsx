@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import { connect } from "react-redux";
 
-const PageConnexionClient = () =>
+const PageConnexionClient = ({ setUser }) =>
 {
     const [messageErreur, setMessageErreur] = useState('');
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ const PageConnexionClient = () =>
 
             if (reponse.status === 200) 
             {
+                setUser(reponse.data);
                 navigate('/pageclient');
             } 
             else 
@@ -48,4 +50,8 @@ const PageConnexionClient = () =>
     );
 }
 
-export default PageConnexionClient;
+const mapDispatchToProps = (dispatch) => ({
+    setUser: (user) => dispatch({type: 'SET_USER',payload:user}),
+});
+
+export default connect(null,mapDispatchToProps)(PageConnexionClient);
