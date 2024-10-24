@@ -1,6 +1,7 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { connect  } from 'react-redux';
 
 class Vehicule extends Component
 {   
@@ -13,71 +14,81 @@ class Vehicule extends Component
             modele: props.modele || "N/A",
             annee: props.annee || NaN,
             formulaireActif: false,
-            cacher: false
+            supprimer: false,
         };
     };
+    
+    gererBtnSupprimerVehicule = () =>
+    {
+        this.setState({supprimer: true});
+    }
 
     modifierEtatFormulaire = () =>
     {
         this.setState({formulaireActif: !this.state.formulaireActif});
+        if(this.props.cacher)
+        {
+            this.props.afficher();
+        }
+        else
+        {
+            this.props.modifierCacher();
+        }
     };
 
-    modifierFabricant = (e) => 
+    gererModification = (e) =>
     {
-        this.setState({fabricant: e.target.value})
+        this.setState({[e.target.name]: e.target.value})
     }
-    modifierModele = (e) => 
-    {
-        this.setState({modele: e.target.value})
-    }
-    modifierAnnee = (e) => 
-    {
-        this.setState({annee :e.target.value})
-    }
-    
+
     render()
     {
         const options = [];
     
         for (let i = 1900; i <= 2024; ++i) 
         {
-            options.push(<option value={i}>{i}</option>);
+            options.push(<option key={i} value={i}>{i}</option>);
         }
         return(
             <>
-                {this.state.formulaireActif ?
-                    (
-                        <form>
-                                <label>Fabricant</label>
-                                <input type="text" name='fabricant' value={this.state.fabricant} onChange={this.modifierFabricant}></input>
+                {this.state.formulaireActif &&
+                    <form onSubmit={this.modifierEtatFormulaire}>
+                        <h2>Modifier un véhicule</h2>
+                            <label>Fabricant</label>
+                            <input type="text" name='fabricant' value={this.state.fabricant} onChange={this.gererModification}></input>
 
-                                <label>Modèle</label>
-                                <input type="text" name='modele' value={this.state.modele} onChange={this.modifierModele}></input>
+                            <label>Modèle</label>
+                            <input type="text" name='modele' value={this.state.modele} onChange={this.gererModification}></input>
 
-                                <label>Années de fabrication</label>
-                                <select value={this.state.annee} onChange={this.modifierAnnee}>
-                                    {options}
-                                </select>
-                                <button type='submit' onClick={this.modifierEtatFormulaire}>Confirmer</button>
-                        </form>
-                    )
-                :
-                    (
-                        <>
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', columnGap:"15px"}}>
-                            <h3>Fabricant: {this.state.fabricant}</h3>
-                            <h3>Modèle: {this.state.modele}</h3>
-                            <h3>Années de fabrication: {this.state.annee}</h3>
+                            <label>Années de fabrication</label>
+                            <select value={this.state.annee} name='annee' onChange={this.gererModification}>
+                                {options}
+                            </select>
+                            <button type='submit'>Confirmer</button>
+                    </form>
+                }
+                {!this.props.cacher &&
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', columnGap:"15px"}}>
+                        <h3>Fabricant: {this.state.fabricant}</h3>
+                        <h3>Modèle: {this.state.modele}</h3>
+                        <h3>Années de fabrication: {this.state.annee}</h3>
 
-                            <button style={{width: "40px",height: "40px",display: "flex",alignItems: "center",justifyContent: "center", margin:0}} onClick={this.modifierEtatFormulaire}><FontAwesomeIcon icon={faPen} /></button>
-                        </div>
-                        
-                        </>
-                    )
+                        <button style={{width: "40px",height: "40px",display: "flex",alignItems: "center",justifyContent: "center", margin:0}} onClick={this.modifierEtatFormulaire}><FontAwesomeIcon icon={faPen} /></button>
+                        <button style={{width: "40px",height: "40px",display: "flex",alignItems: "center",justifyContent: "center", margin:0}} onClick={this.gererBtnSupprimerVehicule}><FontAwesomeIcon icon={faTrashCan} /></button>
+                    </div>
                 }
            </>
         );
     }
 }
 
-export default Vehicule;
+const mapStateToProps = (state) => ({
+    cacher: state.cacher,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    modifierCacher: () => dispatch({ type: 'CACHER' }),
+    afficher: () => dispatch({ type: 'AFFICHER' }),
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(Vehicule);

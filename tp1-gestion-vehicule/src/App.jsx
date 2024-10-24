@@ -2,8 +2,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './App.css';  // Assurez-vous que le chemin vers le fichier CSS est correct
-import GestionVehicule from './gestionVehicule/GestionVehicule';
-import Vehicule from './gestionVehicule/Vehicule';
 
 const App = () => {
     const [courriel, setCourriel] = useState('');
@@ -29,6 +27,7 @@ const App = () => {
     };
 
     return (
+
         <div className="login-container">
             <h1>Connexion</h1>
             <form onSubmit={handleConnexion} className="login-form">

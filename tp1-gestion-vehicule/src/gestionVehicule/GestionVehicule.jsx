@@ -1,5 +1,5 @@
-import React, {Component, useState} from 'react'
-import Vehicule from './Vehicule';
+import React, {Component} from 'react'
+import { connect } from 'react-redux';
 import ManufactureVehicule from './ManufactureVehicule';
 import axios from 'axios';
 
@@ -11,7 +11,6 @@ class GestionVehicule extends Component
         super(props);
         this.state = 
         { 
-            cacherVehicule: false,
             vehicules: props.vehicules || [],
             ajouterVehiculeActif: false,
             ajouterVehiculeVINActif: false,
@@ -60,6 +59,11 @@ class GestionVehicule extends Component
     gererBtnAnnulerAjoutVehiculeComplexe = () =>
     {
         this.setState({ajouterVehiculeComplexeActif: false})
+    }
+
+    supprimerVehicule = () =>
+    {
+        this.setState({vehicules: this.state.vehicules.filter(v=> v.supprimerVehicule !== true)});
     }
 
     creerVehicule = (e) =>
@@ -154,12 +158,12 @@ class GestionVehicule extends Component
     
         for (let i = 1900; i <= 2024; ++i) 
         {
-            optionsAnnee.push(<option value={i}>{i}</option>);
+            optionsAnnee.push(<option key={i} value={i}>{i}</option>);
         }
 
         return(
             <>
-            {!this.state.cacherVehicule &&
+            {!this.props.cacher &&
             <div>
                 <div>
                     <button onClick={this.gererBtnAjouterVehicule}>Ajouter véhicule</button>
@@ -228,4 +232,8 @@ class GestionVehicule extends Component
     }
 }
 
-export default GestionVehicule;
+const mapStateToProps = (state) => ({
+    cacher: state.cacher,
+});
+
+export default connect(mapStateToProps)(GestionVehicule);

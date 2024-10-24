@@ -51,6 +51,9 @@ const PageClient = () => {
           <li className={ongletActif === 'annulerRendezVous' ? 'active' : ''} onClick={() => setOngletActif('annulerRendezVous')}>
             Annuler un rendez-vous
           </li>
+          <li className={ongletActif === 'gestionVehicule' ? 'active' : ''} onClick={() => setOngletActif('gestionVehicule')}>
+            Gérer mes véhicules
+          </li>
         </ul>
       </nav>
 
@@ -153,8 +156,10 @@ const PageClient = () => {
             )}
           </div>
         )}
-      </div>
-    </div>
+
+        {ongletActif === 'gestionVehicule' && (
+            <div>
+            <h3>Mes véhicules</h3>
             <div>
             <GestionVehicule vehicules={
                 [<Vehicule fabricant="Suzuki" modele="SX4" annee={2010} key={0} />,
@@ -162,7 +167,13 @@ const PageClient = () => {
                 <Vehicule fabricant="Suzuki" modele="SX4" annee={2009} key={2}/>,
                 <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} key={3}/>]}>
             </GestionVehicule>
-        </div>
+          </div>
+          </div>
+        )}
+
+      </div>
+    </div>
+
         </div>
   );
 };

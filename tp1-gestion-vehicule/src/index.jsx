@@ -5,9 +5,13 @@ import App from './App'; // Page de connexion
 import PageInscription from './Inscription'; // Page d'inscription
 import PageClient from './PageClient'; // Page client
 import PageMecanicien from './PageMecanicien'; // Page mécanicien
-import Vehicule from './gestionVehicule/Vehicule';
+import { Provider } from 'react-redux';
+import store from './store';
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
+  <Provider store={store}>
   <Router>
     <Routes>
       <Route path="/" element={<App />} />
@@ -15,6 +19,6 @@ ReactDOM.render(
       <Route path="/pageclient" element={<PageClient />} />
       <Route path="/pagemecanicien" element={<PageMecanicien />} />
     </Routes>
-  </Router>,
-  document.getElementById('root')
+  </Router>
+  </Provider>
 );
