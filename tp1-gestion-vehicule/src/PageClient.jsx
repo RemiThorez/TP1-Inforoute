@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Client.css';
-import Vehicule from './gestionVehicule/Vehicule';
 import GestionVehicule from './gestionVehicule/GestionVehicule';
+import { connect } from 'react-redux';
 
 const PageClient = () => {
   const [ongletActif, setOngletActif] = useState('profil');
@@ -165,7 +165,6 @@ const PageClient = () => {
           </div>
           </div>
         }
-
       </div>
     </div>
 
@@ -173,4 +172,8 @@ const PageClient = () => {
   );
 };
 
-export default PageClient;
+const mapStateToProps = (state) => ({
+  vehicules: state.vehicules,
+});
+
+export default connect(mapStateToProps)(PageClient);

@@ -1,7 +1,4 @@
-import React, { Component } from "react";
-import Vehicule from "./Vehicule";
 import axios from 'axios'
-
 
 class ManufactureVehicule
 {

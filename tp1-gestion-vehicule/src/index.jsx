@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App'; // Page de connexion
-import PageInscription from './Inscription'; // Page d'inscription
+import PageInscription from './gestionConnexion/inscription';
 import PageClient from './PageClient'; // Page client
 import PageMecanicien from './PageMecanicien'; // Page mécanicien
 import { Provider } from 'react-redux';
