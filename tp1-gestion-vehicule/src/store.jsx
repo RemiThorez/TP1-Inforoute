@@ -22,6 +22,8 @@ const reducer = (state = etatInitial,action) =>
             return{...state}
         case "SUPPRIMER_VEHICULE":
             return{...state, vehicules: state.vehicules.filter(v=> v.idVehicule !== action.payload)}
+        case "SET_INDEX":
+            return{...state, indexVehicule:action.payload}
         default:
             return state;
     }

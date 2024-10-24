@@ -33,7 +33,14 @@ const PageInscription = () =>
 
             if (reponse.status === 201) 
             {
-                navigate('/');
+                if(donneeFormulaire.get("role") === "client")
+                {
+                    navigate('/pageconnexionclient');
+                }
+                else
+                {
+                    navigate('/pageconnexionmecanicien');
+                }
             } 
             else 
             {

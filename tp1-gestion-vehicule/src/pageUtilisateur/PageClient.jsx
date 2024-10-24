@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../css/Client.css';
 import GestionVehicule from '../gestionVehicule/GestionVehicule';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 const PageClient = () => {
   const [ongletActif, setOngletActif] = useState('profil');
@@ -15,6 +16,7 @@ const PageClient = () => {
   const [symptomes, setSymptomes] = useState('');
   const [date, setDate] = useState('');
   const [heure, setHeure] = useState('');
+  const vehicules = axios.get("https://dummyjson.com/c/8a3c-e974-4034-a362");
 
   const prendreRendezVous = (mecanicien) => {
     const nouveauRendezVous = {
@@ -161,7 +163,7 @@ const PageClient = () => {
             <div>
             <h3>Mes véhicules</h3>
             <div>
-            <GestionVehicule></GestionVehicule>
+            <GestionVehicule argsVehicules={vehicules}></GestionVehicule>
           </div>
           </div>
         }

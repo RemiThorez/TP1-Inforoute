@@ -20,6 +20,16 @@ class GestionVehicule extends Component
         }
 
         this.manufactureVehicule = new ManufactureVehicule();
+
+        /*const v = this.props.argsVehicules.map((vehicule) => ({idVehicule: vehicule.idVehicule,fabricant: vehicule.fabricant,modele: vehicule.modele,annee: vehicule.annee}));
+
+        for(let unVehicule in v)
+        {
+            const vehicule = this.manufactureVehicule.CreerVehicule(unVehicule.fabricant,unVehicule.modele,unVehicule.annee,unVehicule.idVehicule)
+            this.props.ajouterVehicule(vehicule);
+        }
+
+        this.props.setIndex(v[v.length-1].idVehicule);*/
     }
 
 
@@ -79,12 +89,6 @@ class GestionVehicule extends Component
         e.preventDefault();
         const donneeFormulaire = new FormData(e.target);
         const vin = donneeFormulaire.get("vin");
-        
-        let id = 0;
-        if(this.props.vehicules.length !== 0) // Sinon ça rajoute des undefined dans la liste
-        {
-            ++id;
-        }
 
         const vehicule = await this.manufactureVehicule.CreerVehiculeVIN(vin, this.props.indexVehicule)
 
@@ -105,12 +109,6 @@ class GestionVehicule extends Component
 
         if(fabricant != "" && modele != "" && modele != 0)
         {
-            let id = 0;
-            if(this.props.vehicules.length !== 0) // Sinon ça rajoute des undefined dans la liste
-            {
-                ++id;
-            }
-
             //Ajout du véhicule
             const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),this.props.indexVehicule);
         
@@ -247,6 +245,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     ajouterVehicule: (vehicule) => dispatch({ type: 'AJOUTER_VEHICULE', payload: vehicule }),
+    setIndex: (index) => dispatch({type: 'SET_INDEX',payload:index}),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(GestionVehicule);
