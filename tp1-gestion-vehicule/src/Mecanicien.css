@@ -1,37 +1,14 @@
-/* Styles de base */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #f3f4f7, #eaeaea);
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
 
-/* Conteneur principal */
 .mecanicien-container {
   background-color: white;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  width: 100%;
   max-width: 600px;
   text-align: center;
 }
 
-h3 {
-  font-size: 22px;
-  margin-bottom: 20px;
-  color: #333;
-  font-weight: bold;
-}
-
 .tabs {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
 }
 
 .tabs ul {
@@ -41,31 +18,14 @@ h3 {
 }
 
 .tabs li {
-  cursor: pointer;
   padding: 10px 20px;
   background-color: #f8f9fa;
   border-radius: 8px;
   margin-right: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.tabs li.active {
-  background-color: #007bff;
-  color: white;
 }
 
 .tabs li:hover {
   background-color: #0056b3;
-  color: white;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 16px;
 }
 
 button {
@@ -85,20 +45,8 @@ button:disabled {
   cursor: not-allowed;
 }
 
-button:hover:enabled {
-  background-color: #0056b3;
-  transform: scale(1.05);
-}
-
 .message-sauvegarde {
   color: green;
   margin-top: 10px;
   font-weight: bold;
-}
-
-/* Responsive */
-@media (max-width: 500px) {
-  .mecanicien-container {
-    width: 90%;
-  }
 }

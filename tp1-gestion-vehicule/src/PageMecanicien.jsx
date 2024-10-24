@@ -47,7 +47,7 @@ const PageMecanicien = ({ rendezVous = [] }) => {
       <div className="content">
         {ongletActif === 'profil' && (
           <div className="profile-tab">
-            <h3>Modifier mon profil</h3>
+            <h2>Modifier mon profil</h2>
             <input
               type="text"
               placeholder="Entrez le nouveau nom"
@@ -85,7 +85,7 @@ const PageMecanicien = ({ rendezVous = [] }) => {
 
         {ongletActif === 'gererRendezVous' && (
           <div className="rendezvous-tab">
-            <h3>Gérer les rendez-vous</h3>
+            <h2>Gérer les rendez-vous</h2>
             {rendezVousState.length > 0 ? (
               rendezVousState.map((rv, index) => (
                 <div key={index}>

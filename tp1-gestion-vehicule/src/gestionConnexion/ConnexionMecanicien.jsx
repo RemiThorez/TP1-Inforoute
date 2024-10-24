@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const PageConnexionMecanicien = () =>
 {
@@ -19,7 +20,7 @@ const PageConnexionMecanicien = () =>
                 password: donneeFormulaire.get('mdp'),
             });
 
-            if (reponse.status === 201) 
+            if (reponse.status === 200) 
             {
                 navigate('/pagemecanicien');
             } 
@@ -38,7 +39,7 @@ const PageConnexionMecanicien = () =>
         <div className="login-container">
             <h1>Connexion Mécanicien</h1>
             <form onSubmit={gererConnexion} className="login-form">
-                <input type="email" name="courriel" placeholder="Courriel" required />
+                <input type="text" name="username" placeholder="Nom d'utilisateur" required />
                 <input type="password" name="mdp" placeholder="Mot de passe" required />
                 <button type="submit">Se connecter</button>
                 {messageErreur && <p className="error-message">{messageErreur}</p>}
