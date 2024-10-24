@@ -17,7 +17,7 @@ class GestionVehicule extends Component
             ajouterVehiculeVINActif: false,
             ajouterVehiculeComplexeActif: false,
             optionsModeles: [],
-            optionsFabricants: []
+            fabricant: "",
         }
 
         this.manufactureVehicule = new ManufactureVehicule();
@@ -100,30 +100,49 @@ class GestionVehicule extends Component
         if(fabricant != "" && modele != "" && modele != 0)
         {
             //Ajout du véhicule
-            const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),++this.state.vehicules.length)
+            const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),++this.state.vehicules.length);
         
             this.setState((state => ({vehicules:[...state.vehicules, vehicule], ajouterVehiculeComplexeActif: false})));
         }
         else if(fabricant == "") 
         {
-            // On cherche le fabricant
+            // On cherche le fabricant // On ne l'offre pas puisque c'est trop long et il n'y a pas de façon facile de l'obtenir
+            /*
             if(modele == "")
             {
-                alert("Le modèle et le fabricant sont vides !\n Merci d'entrer au moins une de c'est deux informations.");
+                alert("Le modèle et le fabricant sont vides !\n Merci d'entrer au moins une de ces deux informations.");
             }
             else
             {
-                const reponse = await axios.get()
-            }
+                const reponse = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetAllMakes?format=json`);
+                const fabricants = reponse.data.Results.map((fabricant) => ({fabricant: fabricant.Make_Name, Id: fabricant.Make_ID}));
+                const qte = reponse.data.Count;
+
+                for(let i = 0; i< qte;++i)
+                {
+                    console.log(fabricants[i]);
+                    const reponseModeles = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeId/${fabricants[i].Id}?format=json`);
+
+                    const modeles = reponseModeles.data.Results.map((m) => m.Model_Name);
+                    for (let m of modeles)
+                    {
+                        if(m === modele)
+                        {
+                            this.setState({fabricant: fabricants[i]});
+                            return;
+                        }
+                    }
+                }
+            }*/
         }
         else
         {
             // On cherche le modèle
-            const reponse = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${fabricant}/modelyear/${donneeFormulaire.get("annee")}?format=json`)
+            const reponse = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${fabricant}/modelyear/${donneeFormulaire.get("annee")}?format=json`);
             let optionsModele = reponse.data.Results.map((modele)=> <option value={modele.Model_Name}>{modele.Model_Name}</option>);
             if(optionsModele.length == 0)
             {
-                optionsModele.push(<option value={0}>Aucun modèle trouvé pour cette date et ce fabricant.</option>)
+                optionsModele.push(<option value={0}>Aucun modèle trouvé pour cette date et ce fabricant.</option>);
             }
             this.setState({optionsModeles: optionsModele});
         }
@@ -181,17 +200,7 @@ class GestionVehicule extends Component
                     <form onSubmit={this.creerVehiculeComplexe}>
                         <h2>Ajouter véhicule avec informations manquantes</h2>
                         <label>Fabricant: </label>
-                        {this.state.optionsFabricants.length == 0 ?
-                        (
-                            <input type="text" name='fabricant'></input>
-                        ):
-                        (
-                            <select name="fabricant">
-                                {this.state.optionsFabricants}
-                            </select> 
-                        )
-                        }
-                        
+                        <input type="text" name='fabricant'></input>
                         <label>Modèle: </label>
                         {this.state.optionsModeles.length == 0 ?
                         (
