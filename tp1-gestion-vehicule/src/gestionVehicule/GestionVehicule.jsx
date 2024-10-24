@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux';
 import ManufactureVehicule from './ManufactureVehicule';
 import axios from 'axios';
+import Vehicule from './Vehicule';
 
 
 class GestionVehicule extends Component
@@ -11,7 +12,6 @@ class GestionVehicule extends Component
         super(props);
         this.state = 
         { 
-            vehicules: props.vehicules || [],
             ajouterVehiculeActif: false,
             ajouterVehiculeVINActif: false,
             ajouterVehiculeComplexeActif: false,
@@ -61,11 +61,6 @@ class GestionVehicule extends Component
         this.setState({ajouterVehiculeComplexeActif: false})
     }
 
-    supprimerVehicule = () =>
-    {
-        this.setState({vehicules: this.state.vehicules.filter(v=> v.supprimerVehicule !== true)});
-    }
-
     creerVehicule = (e) =>
     {
         e.preventDefault();
@@ -73,9 +68,17 @@ class GestionVehicule extends Component
         const fabricant = donneeFormulaire.get("fabricant");
         const modele = donneeFormulaire.get("modele");
         const annee = donneeFormulaire.get("annee");
-        const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,++this.state.vehicules.length)
+
+        let id = 0;
+
+        if(this.props.vehicules.length !== 0) // Sinon ça rajoute des undefined dans la liste
+        {
+            ++id;
+        }
+
+        const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,id)
         
-        this.setState((state => ({vehicules:[...state.vehicules, vehicule], ajouterVehiculeActif: false})));
+        this.props.ajouterVehicule(vehicule);
     }
     //"JS2YB5A20A6300765"
     creerVehiculeVIN = async (e) =>
@@ -83,12 +86,18 @@ class GestionVehicule extends Component
         e.preventDefault();
         const donneeFormulaire = new FormData(e.target);
         const vin = donneeFormulaire.get("vin");
+        
+        let id = 0;
+        if(this.props.vehicules.length !== 0) // Sinon ça rajoute des undefined dans la liste
+        {
+            ++id;
+        }
 
-        const vehicule = await this.manufactureVehicule.CreerVehiculeVIN(vin, ++this.state.vehicules.length)
+        const vehicule = await this.manufactureVehicule.CreerVehiculeVIN(vin, id)
 
         if(vehicule)
         {
-            this.setState((state => ({vehicules:[...state.vehicules, vehicule], ajouterVehiculeVINActif: false})));
+            this.props.ajouterVehicule(vehicule);
         }
     }
     
@@ -103,10 +112,16 @@ class GestionVehicule extends Component
 
         if(fabricant != "" && modele != "" && modele != 0)
         {
+            let id = 0;
+            if(this.props.vehicules.length !== 0) // Sinon ça rajoute des undefined dans la liste
+            {
+                ++id;
+            }
+
             //Ajout du véhicule
-            const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),++this.state.vehicules.length);
+            const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),id);
         
-            this.setState((state => ({vehicules:[...state.vehicules, vehicule], ajouterVehiculeComplexeActif: false})));
+            this.props.ajouterVehicule(vehicule);
         }
         else if(fabricant == "") 
         {
@@ -143,10 +158,10 @@ class GestionVehicule extends Component
         {
             // On cherche le modèle
             const reponse = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${fabricant}/modelyear/${donneeFormulaire.get("annee")}?format=json`);
-            let optionsModele = reponse.data.Results.map((modele)=> <option value={modele.Model_Name}>{modele.Model_Name}</option>);
+            let optionsModele = reponse.data.Results.map((modele)=> <option key={optionsModele.length} value={modele.Model_Name}>{modele.Model_Name}</option>);
             if(optionsModele.length == 0)
             {
-                optionsModele.push(<option value={0}>Aucun modèle trouvé pour cette date et ce fabricant.</option>);
+                optionsModele.push(<option key={0} value={0}>Aucun modèle trouvé pour cette date et ce fabricant.</option>);
             }
             this.setState({optionsModeles: optionsModele});
         }
@@ -214,18 +229,17 @@ class GestionVehicule extends Component
                             <select name="modele">
                                 {this.state.optionsModeles}
                             </select> 
-                        )
-                        }
+                        )}
                         <label>Année de fabrication: </label>
                         <select name="annee" required>
-                                    {optionsAnnee}
+                            {optionsAnnee}
                         </select>
                         <button type="submit">Ajouter</button>
                         <button onClick={this.gererBtnAnnulerAjoutVehiculeComplexe}>Annuler</button>
                     </form>}
                 </div>
                 </div>}
-                {this.state.vehicules.map((vehicule) => vehicule)}
+                {this.props.vehicules.map((vehicule) => (<Vehicule key={vehicule.id} id={vehicule.id} fabricant={vehicule.fabricant} modele={vehicule.modele} annee={vehicule.annee}/>))}
                 
             </>
         );
@@ -234,6 +248,11 @@ class GestionVehicule extends Component
 
 const mapStateToProps = (state) => ({
     cacher: state.cacher,
+    vehicules: state.vehicules,
 });
 
-export default connect(mapStateToProps)(GestionVehicule);
+const mapDispatchToProps = (dispatch) => ({
+    ajouterVehicule: (vehicule) => dispatch({ type: 'AJOUTER_VEHICULE', payload: vehicule }),
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(GestionVehicule);

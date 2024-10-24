@@ -157,19 +157,14 @@ const PageClient = () => {
           </div>
         )}
 
-        {ongletActif === 'gestionVehicule' && (
+        {ongletActif === 'gestionVehicule' &&
             <div>
             <h3>Mes véhicules</h3>
             <div>
-            <GestionVehicule vehicules={
-                [<Vehicule fabricant="Suzuki" modele="SX4" annee={2010} key={0} />,
-                <Vehicule fabricant="Suzuki" modele="SX4" annee={2008} key={1}/>,
-                <Vehicule fabricant="Suzuki" modele="SX4" annee={2009} key={2}/>,
-                <Vehicule fabricant="Suzuki" modele="SX4" annee={2010} key={3}/>]}>
-            </GestionVehicule>
+            <GestionVehicule></GestionVehicule>
           </div>
           </div>
-        )}
+        }
 
       </div>
     </div>

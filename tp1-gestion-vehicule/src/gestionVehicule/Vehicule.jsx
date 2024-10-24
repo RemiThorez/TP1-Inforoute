@@ -14,13 +14,13 @@ class Vehicule extends Component
             modele: props.modele || "N/A",
             annee: props.annee || NaN,
             formulaireActif: false,
-            supprimer: false,
+            id: props.id || -1
         };
     };
     
     gererBtnSupprimerVehicule = () =>
     {
-        this.setState({supprimer: true});
+        this.props.supprimerVehicule(this.props.id)
     }
 
     modifierEtatFormulaire = () =>
@@ -89,6 +89,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     modifierCacher: () => dispatch({ type: 'CACHER' }),
     afficher: () => dispatch({ type: 'AFFICHER' }),
+    supprimerVehicule: (id) => dispatch({type:'SUPPRIMER_VEHICULE',payload: id}),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Vehicule);

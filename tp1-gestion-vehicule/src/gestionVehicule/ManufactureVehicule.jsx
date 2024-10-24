@@ -5,15 +5,15 @@ import axios from 'axios'
 
 class ManufactureVehicule
 {
-    CreerVehiculeVIN = async (vin, key) =>
+    CreerVehiculeVIN = async (vin, id) =>
     {
         const reponse = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValuesExtended/${vin}?format=json`)
-        return <Vehicule key={key} fabricant={reponse.data.Results[0].Make} modele={reponse.data.Results[0].Model} annee={reponse.data.Results[0].ModelYear} />
+        return {id: id,fabricant: reponse.data.Results[0].Make,modele: reponse.data.Results[0].Model,annee: reponse.data.Results[0].ModelYear};
     };
 
-    CreerVehicule(fabricant,modele,annee,key)
+    CreerVehicule(fabricant,modele,annee,id)
     {
-        return <Vehicule key={key} fabricant={fabricant} modele={modele} annee={annee} />
+        return {id:id, fabricant:fabricant, modele:modele, annee:annee}
     };
 }
 
