@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Mecanicien.css';
+import './css/Mecanicien.css';
 
 const PageMecanicien = ({ rendezVous = [] }) => {
   const [ongletActif, setOngletActif] = useState('profil');
