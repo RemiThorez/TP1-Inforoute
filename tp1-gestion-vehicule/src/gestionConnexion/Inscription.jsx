@@ -20,7 +20,8 @@ const PageInscription = () =>
         
         try 
         {
-            const reponse = await axios.post('https://dummyjson.com/users/add', {
+            const reponse = await axios.post('https://dummyjson.com/users/add', 
+            {
                 lastName: donneeFormulaire.get('nom'),
                 firstName: donneeFormulaire.get('prenom'),
                 email: donneeFormulaire.get('courriel'),
