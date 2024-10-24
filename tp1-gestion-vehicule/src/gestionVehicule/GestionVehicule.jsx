@@ -69,14 +69,7 @@ class GestionVehicule extends Component
         const modele = donneeFormulaire.get("modele");
         const annee = donneeFormulaire.get("annee");
 
-        let id = 0;
-
-        if(this.props.vehicules.length !== 0) // Sinon ça rajoute des undefined dans la liste
-        {
-            ++id;
-        }
-
-        const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,id)
+        const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,this.props.indexVehicule)
         
         this.props.ajouterVehicule(vehicule);
     }
@@ -93,7 +86,7 @@ class GestionVehicule extends Component
             ++id;
         }
 
-        const vehicule = await this.manufactureVehicule.CreerVehiculeVIN(vin, id)
+        const vehicule = await this.manufactureVehicule.CreerVehiculeVIN(vin, this.props.indexVehicule)
 
         if(vehicule)
         {
@@ -119,7 +112,7 @@ class GestionVehicule extends Component
             }
 
             //Ajout du véhicule
-            const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),id);
+            const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),this.props.indexVehicule);
         
             this.props.ajouterVehicule(vehicule);
         }
@@ -239,7 +232,7 @@ class GestionVehicule extends Component
                     </form>}
                 </div>
                 </div>}
-                {this.props.vehicules.map((vehicule) => (<Vehicule key={vehicule.id} id={vehicule.id} fabricant={vehicule.fabricant} modele={vehicule.modele} annee={vehicule.annee}/>))}
+                {this.props.vehicules.map((vehicule) => (<Vehicule key={vehicule.idVehicule} idVehicule={vehicule.idVehicule} fabricant={vehicule.fabricant} modele={vehicule.modele} annee={vehicule.annee}/>))}
                 
             </>
         );
@@ -249,6 +242,7 @@ class GestionVehicule extends Component
 const mapStateToProps = (state) => ({
     cacher: state.cacher,
     vehicules: state.vehicules,
+    indexVehicule: state.indexVehicule,
 });
 
 const mapDispatchToProps = (dispatch) => ({
