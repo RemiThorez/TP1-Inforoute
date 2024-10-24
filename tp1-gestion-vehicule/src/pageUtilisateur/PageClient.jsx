@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './css/Client.css';
-import GestionVehicule from './gestionVehicule/GestionVehicule';
+import GestionVehicule from '../gestionVehicule/GestionVehicule';
 import { connect } from 'react-redux';
 
 const PageClient = () => {
