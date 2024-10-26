@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import '../css/Client.css';
 import GestionVehicule from '../gestionVehicule/GestionVehicule';
 import { connect } from 'react-redux';
+import axios from 'axios';
+import { obtenirVehicules } from '../actions/ActionsVehicules';
 
 class PageClient extends Component
 {
@@ -16,10 +18,22 @@ class PageClient extends Component
         // Appelle avec redux-thunk afin de peupler les différents dropdown button
     }
 
+    componentDidMount()
+    {
+      this.obtenirVehiculesClient();
+    }
+
+    obtenirVehiculesClient() 
+    {
+      const url = "https://dummyjson.com/c/d8db-c2db-4187-85d5" //Avec notre "vrai" api nous ajouterions l'id de l'utilisateur pour obtenir seulement ses véhicules
+      this.props.obtenirVehicules(url);
+    }
+
     sauvegarderNouvelleInfo = async (e) =>
     {
-        const donneeFormulaire = new FormData(e);
         e.preventDefault();
+        const donneeFormulaire = new FormData(e.target);
+        
         const utilisateur = {
             lastName: donneeFormulaire.get('nom'),
             firstName: donneeFormulaire.get('prenom'),
@@ -109,8 +123,7 @@ class PageClient extends Component
             }
           </div>
         </div>
-    
-            </div>
+        </div>
       );
     }
 }
@@ -120,5 +133,10 @@ const mapStateToProps = (state) => ({
     user: state.user,
 });
 
-export default connect(mapStateToProps)(PageClient);
+const mapDispatchToProps = {
+  obtenirVehicules,
+};
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(PageClient);
     

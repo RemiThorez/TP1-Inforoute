@@ -19,7 +19,7 @@ class GestionVehicule extends Component
             fabricant: "",
         }
 
-        this.manufactureVehicule = new ManufactureVehicule();
+        this.manufactureVehicule = new ManufactureVehicule(this.props.dispatch);
 
         /*const v = this.props.argsVehicules.map((vehicule) => ({idVehicule: vehicule.idVehicule,fabricant: vehicule.fabricant,modele: vehicule.modele,annee: vehicule.annee}));
 
@@ -79,7 +79,7 @@ class GestionVehicule extends Component
         const modele = donneeFormulaire.get("modele");
         const annee = donneeFormulaire.get("annee");
 
-        const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,this.props.indexVehicule)
+        const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,this.props.indexVehicule,this.props.user.id)
         
         this.props.ajouterVehicule(vehicule);
     }
@@ -90,7 +90,7 @@ class GestionVehicule extends Component
         const donneeFormulaire = new FormData(e.target);
         const vin = donneeFormulaire.get("vin");
 
-        const vehicule = await this.manufactureVehicule.CreerVehiculeVIN(vin, this.props.indexVehicule)
+        const vehicule = await this.manufactureVehicule.CreerVehiculeVIN(vin, this.props.indexVehicule,this.props.user.id)
 
         if(vehicule)
         {
@@ -110,7 +110,7 @@ class GestionVehicule extends Component
         if(fabricant != "" && modele != "" && modele != 0)
         {
             //Ajout du véhicule
-            const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),this.props.indexVehicule);
+            const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),this.props.indexVehicule,this.props.user.id);
         
             this.props.ajouterVehicule(vehicule);
         }
@@ -241,6 +241,7 @@ const mapStateToProps = (state) => ({
     cacher: state.cacher,
     vehicules: state.vehicules,
     indexVehicule: state.indexVehicule,
+    user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
