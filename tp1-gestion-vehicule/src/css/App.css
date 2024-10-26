@@ -1,8 +1,43 @@
 .login-container {
-  background-color: white;
+  background-color: #fff;
   padding: 40px;
   border-radius: 12px;
   width: 100%;
   max-width: 400px;
+  margin: 0 auto; /* Centrer horizontalement */
   text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajout d'un ombrage léger */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+  transform: scale(1.02); /* Légère mise en avant au survol */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.succes {
+  color: green;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.erreur {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.react-calendar__tile--active:not(.date-reservee) {
+  background-color: green !important;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background-color: darkgreen !important;
+}
+
+.date-reservee {
+  background-color: red !important;
 }

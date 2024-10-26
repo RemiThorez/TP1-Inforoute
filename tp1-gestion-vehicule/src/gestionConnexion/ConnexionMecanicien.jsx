@@ -1,51 +1,45 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
 
-const PageConnexionMecanicien = () =>
-{
-    const [messageErreur, setMessageErreur] = useState('');
-    const navigate = useNavigate();
+const mecaniciens = [
+  { id: 1, username: "kminchelle", password: "kminchellepass" },
+  { id: 2, username: "atuny0", password: "atunypass" },
+  { id: 3, username: "hbingley1", password: "hbingley1" },
+  { id: 4, username: "darvink", password: "darvinkpass" },
+];
 
-    const gererConnexion = async (e) =>
-    {
-        e.preventDefault();
-        const donneeFormulaire = new FormData(e.target);
+const PageConnexionMecanicien = () => {
+  const [messageErreur, setMessageErreur] = useState('');
+  const navigate = useNavigate();
 
-        try 
-        {
-            const reponse = await axios.post('https://dummyjson.com/users/login', 
-            {
-                username: donneeFormulaire.get('username'),
-                password: donneeFormulaire.get('mdp'),
-            });
+  const gererConnexion = (e) => {
+    e.preventDefault();
+    const username = e.target.username.value;
+    const password = e.target.mdp.value;
 
-            if (reponse.status === 200) 
-            {
-                navigate('/pagemecanicien');
-            } 
-            else 
-            {
-                setMessageErreur("Erreur lors de la connexion!");
-            }
-        } 
-        catch (error) 
-        {
-            setMessageErreur("Erreur lors de la connexion!");
-        }
-    }
-
-    return(
-        <div className="login-container">
-            <h1>Connexion Mécanicien</h1>
-            <form onSubmit={gererConnexion} className="login-form">
-                <input type="text" name="username" placeholder="Nom d'utilisateur" required />
-                <input type="password" name="mdp" placeholder="Mot de passe" required />
-                <button type="submit">Se connecter</button>
-                {messageErreur && <p className="error-message">{messageErreur}</p>}
-            </form>
-        </div>
+    const mecanicienValide = mecaniciens.find(
+      (m) => m.username === username && m.password === password
     );
-}
+
+    if (mecanicienValide) {
+      localStorage.setItem('mecanicien', JSON.stringify(mecanicienValide));
+      navigate('/pagemecanicien');
+    } else {
+      setMessageErreur("Nom d'utilisateur ou mot de passe incorrect !");
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <h1>Connexion Mécanicien</h1>
+      <form onSubmit={gererConnexion} className="login-form">
+        <input type="text" name="username" placeholder="Nom d'utilisateur" required />
+        <input type="password" name="mdp" placeholder="Mot de passe" required />
+        <button type="submit">Se connecter</button>
+        {messageErreur && <p className="error-message">{messageErreur}</p>}
+      </form>
+    </div>
+  );
+};
 
 export default PageConnexionMecanicien;
