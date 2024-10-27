@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Inscription.css';
+import '../css/Inscription.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 

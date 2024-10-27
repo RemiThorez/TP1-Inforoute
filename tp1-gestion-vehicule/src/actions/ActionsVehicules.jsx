@@ -7,9 +7,6 @@ export const obtenirVehicules = (url) =>
         try 
         {
             const reponse = await axios.get(url);
-            console.log(reponse);
-            console.log(reponse.data);
-            console.log(reponse.data.voiture);
             const vehicules = reponse.data.voiture.map(v =>({
                 idVehicule: v.idVehicule,
                 fabricant: v.fabricant,
@@ -30,7 +27,7 @@ export const modifierVehicule = async (vehicule) =>
 {
     try
     {
-        const reponse = await axios.patch("https://dummyjson.com/c/9728-3e79-499c-97e9",vehicule); // Dans notre api finale nous ajouterons le vehicule dans le body
+        const reponse = await axios.patch("https://dummyjson.com/c/9728-3e79-499c-97e9",vehicule);
 
         if(reponse.status === 200)
         {

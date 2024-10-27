@@ -20,13 +20,19 @@ const reducer = (state = etatInitial,action) =>
         case "AJOUTER_VEHICULE":
             return{...state, vehicules:[...state.vehicules,action.payload], indexVehicule: state.indexVehicule + 1};
         case "MODIFIER_VEHICULE":
-            return{...state}
+            return{...state};
         case "SUPPRIMER_VEHICULE":
-            return{...state, vehicules: state.vehicules.filter(v=> v.idVehicule !== action.payload)}
+            return{...state, vehicules: state.vehicules.filter(v=> v.idVehicule !== action.payload)};
         case "SET_INDEX":
-            return{...state, indexVehicule:action.payload}
+            return{...state, indexVehicule:action.payload};
         case "SET_USER":
-            return{...state, user:action.payload}        
+            return{...state, user:action.payload};
+        case "SET_VEHICULES_EXISTANT":
+            if(action.payload.length === 0)
+            {
+                return{...state};
+            }
+            return{...state, vehicules: action.payload};
         default:
             return state;
     }

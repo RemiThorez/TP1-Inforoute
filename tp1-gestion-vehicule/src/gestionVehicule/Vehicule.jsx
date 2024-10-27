@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { connect  } from 'react-redux';
+import { modifierVehicule,supprimerVehicule } from '../actions/ActionsVehicules';
 
 class Vehicule extends Component
 {   
@@ -21,6 +22,7 @@ class Vehicule extends Component
     gererBtnSupprimerVehicule = () =>
     {
         this.props.supprimerVehicule(this.state.idVehicule)
+        supprimerVehicule(this.state.idVehicule);
     }
 
     modifierEtatFormulaire = () =>
@@ -29,6 +31,7 @@ class Vehicule extends Component
         if(this.props.cacher)
         {
             this.props.afficher();
+            this.props.modifierVehicule({fabricant: this.state.fabricant, modele: this.state.modele, annee: this.state.annee, idVehicule: this.state.idVehicule,});
         }
         else
         {
@@ -90,6 +93,8 @@ const mapDispatchToProps = (dispatch) => ({
     modifierCacher: () => dispatch({ type: 'CACHER' }),
     afficher: () => dispatch({ type: 'AFFICHER' }),
     supprimerVehicule: (idVehicule) => dispatch({type:'SUPPRIMER_VEHICULE',payload: idVehicule}),
+    modifierVehicule,
+    supprimerVehicule,
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Vehicule);

@@ -1,16 +1,29 @@
 import axios from 'axios'
+import { ajouterVehicule } from '../actions/ActionsVehicules';
 
 class ManufactureVehicule
 {
-    CreerVehiculeVIN = async (vin, idVehicule) =>
+    constructor(dispatch) 
+    {
+        this.dispatch = dispatch;
+    }
+
+    CreerVehiculeVIN = async (vin, idVehicule,idUser) =>
     {
         const reponse = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValuesExtended/${vin}?format=json`)
-        return {idVehicule: idVehicule,fabricant: reponse.data.Results[0].Make,modele: reponse.data.Results[0].Model,annee: reponse.data.Results[0].ModelYear};
+        const vehicule = {idVehicule: idVehicule,fabricant: reponse.data.Results[0].Make,modele: reponse.data.Results[0].Model,annee: reponse.data.Results[0].ModelYear,idUser:idUser};
+
+        this.dispatch(ajouterVehicule(vehicule));
+        return vehicule;
+        
     };
 
-    CreerVehicule(fabricant,modele,annee,idVehicule)
+    CreerVehicule(fabricant,modele,annee,idVehicule,idUser)
     {
-        return {idVehicule:idVehicule, fabricant:fabricant, modele:modele, annee:annee}
+        const vehicule = {idVehicule:idVehicule, fabricant:fabricant, modele:modele, annee:annee, idUser:idUser}
+
+        this.dispatch(ajouterVehicule(vehicule));
+        return vehicule;
     };
 }
 
