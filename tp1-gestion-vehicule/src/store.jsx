@@ -47,8 +47,6 @@ const reducer = (state = etatInitial,action) =>
                 return{...state};
             }
             return{...state, rdvs: action.payload};
-        case "SET_INDEX_VEHICULE":
-            return{...state, indexRdv:action.payload}
         default:
             return state;
     }

@@ -28,7 +28,7 @@ export const obtenirRdvsAPI = (url) =>
     };
 };
 
-export const modifierRdvAPI = async (rdv) =>
+export const modifierRdvAPI = (rdv) =>
 {
     return async (dispatch) => 
     {
@@ -53,7 +53,7 @@ export const modifierRdvAPI = async (rdv) =>
     }
 };
 
-export const supprimerRdvAPI = async (idRdv) =>
+export const supprimerRdvAPI = (idRdv) =>
 {
     return async (dispatch) => 
     {
@@ -78,7 +78,7 @@ export const supprimerRdvAPI = async (idRdv) =>
     }
 }
 
-export const annulerRdvAPI = async (idRdv) =>
+export const annulerRdvAPI = (idRdv) =>
 {
     return async (dispatch) => 
     {
@@ -103,7 +103,7 @@ export const annulerRdvAPI = async (idRdv) =>
     }
 }
 
-export const ajouterRdvAPI = async (rdv) =>
+export const ajouterRdvAPI = (rdv) =>
 {
     return async (dispatch) => 
     {  

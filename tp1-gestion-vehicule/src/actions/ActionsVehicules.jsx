@@ -28,11 +28,11 @@ export const obtenirVehiculesAPI = (url) =>
     };
 };
 
-export const modifierVehiculeAPI = async (vehicule) =>
+export const modifierVehiculeAPI = (vehicule) =>
 {
     return async (dispatch) => 
     {
-            try
+        try
         {
             const reponse = await axios.patch("https://dummyjson.com/c/9728-3e79-499c-97e9",vehicule);
 
@@ -54,7 +54,7 @@ export const modifierVehiculeAPI = async (vehicule) =>
     
 };
 
-export const supprimerVehiculeAPI = async (idVehicule) =>
+export const supprimerVehiculeAPI = (idVehicule) =>
 {
     return async (dispatch) => 
     {
@@ -79,7 +79,7 @@ export const supprimerVehiculeAPI = async (idVehicule) =>
     }
 }   
 
-export const ajouterVehiculeAPI = async (vehicule) =>
+export const ajouterVehiculeAPI = (vehicule) =>
 {
     return async (dispatch) => 
     {
