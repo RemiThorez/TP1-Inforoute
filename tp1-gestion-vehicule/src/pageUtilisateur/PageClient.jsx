@@ -28,6 +28,11 @@ class PageClient extends Component
         };
     }
 
+    componentDidMount()
+    {
+        this.obtenirVehiculesClient();
+    };
+
     obtenirVehiculesClient() 
     {
         const url = "https://dummyjson.com/c/d8db-c2db-4187-85d5" //Avec notre "vrai" api nous ajouterions l'id de l'utilisateur pour obtenir seulement ses véhicules

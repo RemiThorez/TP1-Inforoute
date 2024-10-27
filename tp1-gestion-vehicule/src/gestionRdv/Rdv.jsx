@@ -22,14 +22,18 @@ class Rdv extends Component
             heure: props.heure || NaN,
             duree: props.duree || NaN,
             rdvId: props.rdvId || -1,
-            etat: props.etat || "Attente" //Signifie attente de la confirmation par le mécanicien
+            confirmer: props.confirmer || false, //Signifie attente de la confirmation par le mécanicien
+            etat: props.etat || true // Détermine si le rdv existe ou s'il est annuler. 
         };
     };
     
     gererBtnAnnulerRdv = () =>
     {
-        this.props.annulerRdv(this.state.idVehicule)
-        this.props.annulerRdvAPI(this.state.idVehicule);
+        this.setState({confirmer: false, etat: false});
+        this.props.annulerRdv(this.state.rdvId);
+        this.props.annulerRdvAPI(this.state.rdvId);
+        this.props.modifierRdvAPI({client: this.state.client,clientId: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,mecanicienId: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,rdvId: this.state.rdvId,etat: false,confirmer: this.state.confirmer});
+        this.props.modifierVehicule({client: this.state.client,clientId: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,mecanicienId: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,rdvId: this.state.rdvId,etat: false,confirmer: this.state.confirmer});
     }
 
     modifierEtatFormulaire = () =>
@@ -38,7 +42,8 @@ class Rdv extends Component
         if(this.props.cacher)
         {
             this.props.afficher();
-            this.props.modifierRdvAPI({fabricant: this.state.fabricant, modele: this.state.modele, annee: this.state.annee, idVehicule: this.state.idVehicule,});
+            this.props.modifierRdvAPI({client: this.state.client,clientId: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,mecanicienId: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,rdvId: this.state.rdvId,etat: false,confirmer: this.state.confirmer});
+            this.props.modifierVehicule({client: this.state.client,clientId: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,mecanicienId: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,rdvId: this.state.rdvId,etat: false,confirmer: this.state.confirmer});
         }
         else
         {
@@ -57,17 +62,8 @@ class Rdv extends Component
             <>
                 {this.state.formulaireActif &&
                     <form onSubmit={this.modifierEtatFormulaire}>
-                        <h2>Modifier un véhicule</h2>
-                            <label>Fabricant</label>
-                            <input type="text" name='fabricant' value={this.state.fabricant} onChange={this.gererModification}></input>
-
-                            <label>Modèle</label>
-                            <input type="text" name='modele' value={this.state.modele} onChange={this.gererModification}></input>
-
-                            <label>Années de fabrication</label>
-                            <select value={this.state.annee} name='annee' onChange={this.gererModification}>
-                                {options}
-                            </select>
+                        <h2>Modifier mes besoins:</h2>
+                            <input type="textarea" name='besoins' value={this.state.besoins} onChange={this.gererModification}></input>
                             <button type='submit'>Confirmer</button>
                     </form>
                 }
@@ -78,7 +74,7 @@ class Rdv extends Component
                         <h3>Années de fabrication: {this.state.annee}</h3>
 
                         <button style={{width: "40px",height: "40px",display: "flex",alignItems: "center",justifyContent: "center", margin:0}} onClick={this.modifierEtatFormulaire}><FontAwesomeIcon icon={faPen} /></button>
-                        <button style={{width: "40px",height: "40px",display: "flex",alignItems: "center",justifyContent: "center", margin:0}} onClick={this.gererBtnSupprimerVehicule}><FontAwesomeIcon icon={faTrashCan} /></button>
+                        <button style={{width: "40px",height: "40px",display: "flex",alignItems: "center",justifyContent: "center", margin:0}} onClick={this.gererBtnAnnulerRdv}><FontAwesomeIcon icon={faTrashCan} /></button>
                     </div>
                 }
            </>
@@ -93,9 +89,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     modifierCacher: () => dispatch({ type: 'CACHER' }),
     afficher: () => dispatch({ type: 'AFFICHER' }),
-    annulerRdv: (idVehicule) => dispatch({type:'SUPPRIMER_VEHICULE',payload: idVehicule}),
-    modifierRdvAPI,
-    annulerRdvAPI,
+    annulerRdv: (idVehicule) => dispatch({type:'ANNULER_RDV',payload: idVehicule}),
+    modifierRdv: (rdv) => dispatch({type: 'MODIFIER_RDV',payload: rdv}),
+    modifierRdvAPI: (rdv) => dispatch(modifierRdvAPI(rdv)),
+    annulerRdvAPI: (rdvId) => dispatch(annulerRdvAPI(rdvId)),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Rdv);

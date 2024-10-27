@@ -21,8 +21,7 @@ class Vehicule extends Component
     
     gererBtnSupprimerVehicule = () =>
     {
-        this.props.supprimerVehicule(this.state.idVehicule)
-        supprimerVehiculeAPI(this.state.idVehicule);
+        this.props.supprimerVehiculeAPI(this.state.idVehicule);
     }
 
     modifierEtatFormulaire = () =>
@@ -92,7 +91,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     modifierCacher: () => dispatch({ type: 'CACHER' }),
     afficher: () => dispatch({ type: 'AFFICHER' }),
-    supprimerVehicule: (idVehicule) => dispatch({type:'SUPPRIMER_VEHICULE',payload: idVehicule}),
     modifierVehiculeAPI: (vehicule) => dispatch(modifierVehiculeAPI(vehicule)),
     supprimerVehiculeAPI: (idVehicule) => dispatch(supprimerVehiculeAPI(idVehicule)),
 });

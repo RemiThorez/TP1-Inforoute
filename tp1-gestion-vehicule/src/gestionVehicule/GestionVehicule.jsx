@@ -20,16 +20,6 @@ class GestionVehicule extends Component
         }
 
         this.manufactureVehicule = new ManufactureVehicule(this.props.dispatch);
-
-        /*const v = this.props.argsVehicules.map((vehicule) => ({idVehicule: vehicule.idVehicule,fabricant: vehicule.fabricant,modele: vehicule.modele,annee: vehicule.annee}));
-
-        for(let unVehicule in v)
-        {
-            const vehicule = this.manufactureVehicule.CreerVehicule(unVehicule.fabricant,unVehicule.modele,unVehicule.annee,unVehicule.idVehicule)
-            this.props.ajouterVehicule(vehicule);
-        }
-
-        this.props.setIndex(v[v.length-1].idVehicule);*/
     }
 
 
@@ -79,23 +69,16 @@ class GestionVehicule extends Component
         const modele = donneeFormulaire.get("modele");
         const annee = donneeFormulaire.get("annee");
 
-        const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,this.props.indexVehicule,this.props.user.id)
-        
-        this.props.ajouterVehicule(vehicule);
+        this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,this.props.indexVehicule,this.props.user.id)
     }
     //"JS2YB5A20A6300765"
-    creerVehiculeVIN = async (e) =>
+    creerVehiculeVIN = (e) =>
     {
         e.preventDefault();
         const donneeFormulaire = new FormData(e.target);
         const vin = donneeFormulaire.get("vin");
 
-        const vehicule = await this.manufactureVehicule.CreerVehiculeVIN(vin, this.props.indexVehicule,this.props.user.id)
-
-        if(vehicule)
-        {
-            this.props.ajouterVehicule(vehicule);
-        }
+        this.manufactureVehicule.CreerVehiculeVIN(vin, this.props.indexVehicule,this.props.user.id)
     }
     
     creerVehiculeComplexe = async (e) =>
@@ -110,9 +93,8 @@ class GestionVehicule extends Component
         if(fabricant != "" && modele != "" && modele != 0)
         {
             //Ajout du véhicule
-            const vehicule = this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),this.props.indexVehicule,this.props.user.id);
+            this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),this.props.indexVehicule,this.props.user.id);
         
-            this.props.ajouterVehicule(vehicule);
         }
         else if(fabricant == "") 
         {
@@ -244,9 +226,4 @@ const mapStateToProps = (state) => ({
     user: state.user,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    ajouterVehicule: (vehicule) => dispatch({ type: 'AJOUTER_VEHICULE', payload: vehicule }),
-    setIndex: (index) => dispatch({type: 'SET_INDEX',payload:index}),
-});
-
-export default connect(mapStateToProps,mapDispatchToProps)(GestionVehicule);
+export default connect(mapStateToProps)(GestionVehicule);

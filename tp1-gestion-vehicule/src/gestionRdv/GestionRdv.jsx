@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux';
-import axios from 'axios';
 import Rdv from './Rdv';
 
 
@@ -11,7 +10,7 @@ class GestionRdv extends Component
         super(props);
         this.state = 
         {
-            
+
         }
     }
 
@@ -34,7 +33,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     ajouterVehicule: (vehicule) => dispatch({ type: 'AJOUTER_VEHICULE', payload: vehicule }),
-    setIndex: (index) => dispatch({type: 'SET_INDEX',payload:index}),
+    setIndex: (index) => dispatch({type: 'SET_INDEX_VEHICULE',payload:index}),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(GestionRdv);
