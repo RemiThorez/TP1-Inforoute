@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ajouterVehicule } from '../actions/ActionsVehicules';
+import { ajouterVehiculeAPI } from '../actions/ActionsVehicules';
 
 class ManufactureVehicule
 {
@@ -13,7 +13,7 @@ class ManufactureVehicule
         const reponse = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValuesExtended/${vin}?format=json`)
         const vehicule = {idVehicule: idVehicule,fabricant: reponse.data.Results[0].Make,modele: reponse.data.Results[0].Model,annee: reponse.data.Results[0].ModelYear,idUser:idUser};
 
-        this.dispatch(ajouterVehicule(vehicule));
+        this.dispatch(ajouterVehiculeAPI(vehicule));
         return vehicule;
         
     };
@@ -22,7 +22,7 @@ class ManufactureVehicule
     {
         const vehicule = {idVehicule:idVehicule, fabricant:fabricant, modele:modele, annee:annee, idUser:idUser}
 
-        this.dispatch(ajouterVehicule(vehicule));
+        this.dispatch(ajouterVehiculeAPI(vehicule));
         return vehicule;
     };
 }

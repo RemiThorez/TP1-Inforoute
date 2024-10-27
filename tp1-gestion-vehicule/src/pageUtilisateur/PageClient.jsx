@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import GestionVehicule from '../gestionVehicule/GestionVehicule';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { obtenirVehicules } from '../actions/ActionsVehicules';
+import { obtenirVehiculesAPI } from '../actions/ActionsVehicules';
 
 const mecaniciens = [
   { id: 1, firstName: "Kurtis", lastName: "Minchelle" },
@@ -28,15 +28,10 @@ class PageClient extends Component
         };
     }
 
-    componentDidMount()
-    {
-        this.obtenirVehiculesClient();
-    };
-
     obtenirVehiculesClient() 
     {
         const url = "https://dummyjson.com/c/d8db-c2db-4187-85d5" //Avec notre "vrai" api nous ajouterions l'id de l'utilisateur pour obtenir seulement ses véhicules
-        this.props.obtenirVehicules(url);
+        this.props.obtenirVehiculesAPI(url);
     };
 
     componentDidUpdate() 
@@ -292,7 +287,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     setUser: (user) => dispatch({type: 'SET_USER',payload:user}),
-    obtenirVehicules: (url) => dispatch(obtenirVehicules(url)),
+    obtenirVehiculesAPI: (url) => dispatch(obtenirVehiculesAPI(url)),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(PageClient);

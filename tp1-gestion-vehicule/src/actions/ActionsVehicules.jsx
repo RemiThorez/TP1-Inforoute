@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const obtenirVehicules = (url) => 
+export const obtenirVehiculesAPI = (url) => 
 {
     return async (dispatch) => 
     {
@@ -23,7 +23,7 @@ export const obtenirVehicules = (url) =>
     };
 };
 
-export const modifierVehicule = async (vehicule) =>
+export const modifierVehiculeAPI = async (vehicule) =>
 {
     try
     {
@@ -44,7 +44,7 @@ export const modifierVehicule = async (vehicule) =>
     }
 };
 
-export const supprimerVehicule = async (idVehicule) =>
+export const supprimerVehiculeAPI = async (idVehicule) =>
 {
     try
     {
@@ -65,7 +65,7 @@ export const supprimerVehicule = async (idVehicule) =>
     }
 }
 
-export const ajouterVehicule = async (vehicule) =>
+export const ajouterVehiculeAPI = async (vehicule) =>
 {
     try
     {

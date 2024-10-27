@@ -2,27 +2,34 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { connect  } from 'react-redux';
-import { modifierVehiculeAPI,supprimerVehiculeAPI } from '../actions/ActionsVehicules';
+import { modifierRdvAPI,annulerRdvAPI } from '../actions/ActionsVehicules';
 
-class Vehicule extends Component
+class Rdv extends Component
 {   
     constructor(props)
     {
         super(props);
         this.state = 
         { 
-            fabricant: props.fabricant || "N/A",
-            modele: props.modele || "N/A",
-            annee: props.annee || NaN,
-            formulaireActif: false,
-            idVehicule: props.idVehicule,
+            client: props.client || null,
+            clientId: props.clientId ||-1,
+            idVehicule: props.idVehicule || -1,
+            infoVehicule: props.infoVehicule || "",
+            besoins: props.besoins || "",
+            mecanicien: props.mecanicien || null,
+            mecanicienId: props.mecanicienId ||-1,
+            date:props.date || new Date(),
+            heure: props.heure || NaN,
+            duree: props.duree || NaN,
+            rdvId: props.rdvId || -1,
+            etat: props.etat || "Attente" //Signifie attente de la confirmation par le mécanicien
         };
     };
     
-    gererBtnSupprimerVehicule = () =>
+    gererBtnAnnulerRdv = () =>
     {
-        this.props.supprimerVehicule(this.state.idVehicule)
-        supprimerVehiculeAPI(this.state.idVehicule);
+        this.props.annulerRdv(this.state.idVehicule)
+        this.props.annulerRdvAPI(this.state.idVehicule);
     }
 
     modifierEtatFormulaire = () =>
@@ -31,7 +38,7 @@ class Vehicule extends Component
         if(this.props.cacher)
         {
             this.props.afficher();
-            this.props.modifierVehiculeAPI({fabricant: this.state.fabricant, modele: this.state.modele, annee: this.state.annee, idVehicule: this.state.idVehicule,});
+            this.props.modifierRdvAPI({fabricant: this.state.fabricant, modele: this.state.modele, annee: this.state.annee, idVehicule: this.state.idVehicule,});
         }
         else
         {
@@ -46,12 +53,6 @@ class Vehicule extends Component
 
     render()
     {
-        const options = [];
-    
-        for (let i = 1900; i <= 2024; ++i) 
-        {
-            options.push(<option key={i} value={i}>{i}</option>);
-        }
         return(
             <>
                 {this.state.formulaireActif &&
@@ -92,9 +93,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     modifierCacher: () => dispatch({ type: 'CACHER' }),
     afficher: () => dispatch({ type: 'AFFICHER' }),
-    supprimerVehicule: (idVehicule) => dispatch({type:'SUPPRIMER_VEHICULE',payload: idVehicule}),
-    modifierVehiculeAPI: (vehicule) => dispatch(modifierVehiculeAPI(vehicule)),
-    supprimerVehiculeAPI: (idVehicule) => dispatch(supprimerVehiculeAPI(idVehicule)),
+    annulerRdv: (idVehicule) => dispatch({type:'SUPPRIMER_VEHICULE',payload: idVehicule}),
+    modifierRdvAPI,
+    annulerRdvAPI,
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(Vehicule);
+export default connect(mapStateToProps,mapDispatchToProps)(Rdv);
