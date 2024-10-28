@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { obtenirRdvsAPI } from '../actions/ActionsRdvs';
 import Rdv from '../gestionRdv/Rdv';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -19,11 +18,6 @@ class PageMecanicien extends Component
         };
     }
 
-    componentDidMount()
-    {
-        this.obtenirRendezVous();
-    };
-
     calculerBenefice = (e) =>
     {
         const totalCouts = this.props.rdvs.reduce((total, rdv) => total + (typeof rdv.cout === 'number' ? rdv.cout : parseFloat(rdv.cout) || 0), 0);
@@ -31,12 +25,6 @@ class PageMecanicien extends Component
         this.setState({ benefices: benefices});
         this.modifierOngletActif(e);
     }
-
-    obtenirRendezVous()
-    {
-        const url = "https://dummyjson.com/c/8e46-5801-45bc-8167";//Avec notre "vrai" api nous ajouterions l'id de l'utilisateur pour obtenir seulement ses rendez-vous
-        this.props.obtenirRdvsAPI(url);
-    };
 
     modifierOngletActif = (e) => 
     {
@@ -165,7 +153,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     setUser: (user) => dispatch({type: 'SET_USER',payload:user}),
-    obtenirRdvsAPI: (url) => dispatch(obtenirRdvsAPI(url)),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(PageMecanicien);

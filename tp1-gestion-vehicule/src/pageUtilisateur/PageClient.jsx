@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import Calendar from 'react-calendar';
 import GestionVehicule from '../gestionVehicule/GestionVehicule';
 import { connect } from 'react-redux';
-import { obtenirVehiculesAPI } from '../actions/ActionsVehicules';
-import { obtenirMecaniciensAPI, obtenirRdvsAPI,obtenirHeureDispoMecaniciensAPI,obtenirDatesDisponiblesAPI,ajouterRdvAPI,effectuerPaimentAPI,enregistreInfoPaimentAPI } from '../actions/ActionsRdvs';
+import { obtenirHeureDispoMecaniciensAPI,obtenirDatesDisponiblesAPI,ajouterRdvAPI,effectuerPaimentAPI,enregistreInfoPaimentAPI } from '../actions/ActionsRdvs';
 import Rdv from '../gestionRdv/Rdv';
 import axios from 'axios';
 import '../css/App.css';
@@ -23,13 +22,6 @@ class PageClient extends Component
             rdvId:-1,
         };
     }
-
-    componentDidMount()
-    {
-        this.obtenirVehiculesClient();
-        this.obtenirMecaniciens();
-        this.obtenirRendezVous();
-    };
 
     ouvrirDialogPaiment = (rdvId) => 
     {
@@ -74,23 +66,6 @@ class PageClient extends Component
         this.props.obtenirHeureDispoMecaniciensAPI(url);
         url = "https://dummyjson.com/c/744a-1dde-457f-acff" //Avec notre "vrai" api nous ajouterions l'id du mécaniciens pour obtenir seulement son horaire spécifique
         this.props.obtenirDatesDisponiblesAPI(url);
-    };
-
-    obtenirMecaniciens()
-    {
-        this.props.obtenirMecaniciensAPI();
-    };
-
-    obtenirRendezVous()
-    {
-        const url = "https://dummyjson.com/c/8e46-5801-45bc-8167";//Avec notre "vrai" api nous ajouterions l'id de l'utilisateur pour obtenir seulement ses rendez-vous
-        this.props.obtenirRdvsAPI(url);
-    };
-
-    obtenirVehiculesClient() 
-    {
-        const url = "https://dummyjson.com/c/d8db-c2db-4187-85d5" //Avec notre "vrai" api nous ajouterions l'id de l'utilisateur pour obtenir seulement ses véhicules
-        this.props.obtenirVehiculesAPI(url);
     };
 
     gererChangementMecanicien = () =>
@@ -352,9 +327,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     setUser: (user) => dispatch({type: 'SET_USER',payload:user}),
     setEstPayer: (rdvId) => dispatch({type: 'SET_ESTPAYER',payload: rdvId}),
-    obtenirVehiculesAPI: (url) => dispatch(obtenirVehiculesAPI(url)),
-    obtenirMecaniciensAPI: () => dispatch(obtenirMecaniciensAPI()),
-    obtenirRdvsAPI: (url) => dispatch(obtenirRdvsAPI(url)),
     obtenirHeureDispoMecaniciensAPI: (url) => dispatch(obtenirHeureDispoMecaniciensAPI(url)),
     obtenirDatesDisponiblesAPI: (url) => dispatch(obtenirDatesDisponiblesAPI(url)),
     ajouterRdvAPI: (rdv) => dispatch(ajouterRdvAPI(rdv)),

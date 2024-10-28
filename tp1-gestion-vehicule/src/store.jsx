@@ -1,6 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-const etatInitial = 
+const loadFromLocalStorage = () => {
+    try {
+        const serializedState = localStorage.getItem('appState');
+        return serializedState ? JSON.parse(serializedState) : undefined;
+    } catch (error) {
+        console.error("Could not load state from localStorage", error);
+        return undefined;
+    }
+};
+
+const saveToLocalStorage = (state) => {
+    try {
+        const serializedState = JSON.stringify(state);
+        localStorage.setItem('appState', serializedState);
+    } catch (error) {
+        console.error("Could not save state to localStorage", error);
+    }
+};
+
+
+const etatInitial = loadFromLocalStorage() ||
 {
     cacher: false,
     supprimer: false,
@@ -66,5 +86,15 @@ const reducer = (state = etatInitial,action) =>
     }
 };
 
-const store = configureStore({reducer:reducer});
+const localStorageMiddleware = store => next => action => {
+    const result = next(action);
+    saveToLocalStorage(store.getState());
+    return result;
+};
+
+const store = configureStore({
+    reducer:reducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(localStorageMiddleware),
+});
+
 export default store;
