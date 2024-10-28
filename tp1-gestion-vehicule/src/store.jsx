@@ -80,7 +80,7 @@ const reducer = (state = etatInitial,action) =>
         case "AJOUTER_INFO_PAIMENT":
             return{...state, infoPaiment:action.payload};
         case "SET_ESTPAYER":
-            return{...state, rdvs:state.rdvs.map(rdv => rdv.rdvId === action.payload.rdvId ? { ...rdv,estPayer: true }: rdv)}
+            return{...state, rdvs:state.rdvs.map(rdv => rdv.rdvId === action.payload ? { ...rdv,estPayer: true }: rdv)}
         default:
             return state;
     }

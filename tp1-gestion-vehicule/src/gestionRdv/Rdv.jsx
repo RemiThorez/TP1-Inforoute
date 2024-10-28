@@ -77,7 +77,8 @@ class Rdv extends Component
 
     gererBtnAnnuler= () =>
     {
-        
+        this.setState({modifier: false});
+        this.setState({supprimer: false});
     }
 
     gererEnvoiModification = () =>

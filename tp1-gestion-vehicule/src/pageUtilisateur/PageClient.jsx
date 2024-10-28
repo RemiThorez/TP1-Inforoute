@@ -56,7 +56,8 @@ class PageClient extends Component
         const infoPaiment = {
             numero: donneeFormulaire.get("numero"),
             expiration: donneeFormulaire.get("expiration"),
-            cvv: donneeFormulaire.get("cvv")
+            cvv: donneeFormulaire.get("cvv"),
+            idClient: this.props.user.id,
         };
 
         if(donneeFormulaire.get("enregistrer"))
@@ -188,9 +189,9 @@ class PageClient extends Component
                     <div className='dialog-paiment-contenu'>
                     <h3>Entrez les informations de paiement</h3>
                     <form onSubmit={this.gererPaiment}>
-                    <input type="text" name="numero" placeholder="0000000000000000" defaultValue={this.props.infoPaiment && this.props.infoPaiment.numero}required pattern="\d{16}"/>
-                        <input type="text" name="expiration" placeholder="MM/YY" defaultValue={this.props.infoPaiment && this.props.infoPaiment.expiration} required pattern="^(0[1-9]|1[0-2])/(\d{2})$"/>
-                        <input type="text" name="cvv"placeholder="123" defaultValue={this.props.infoPaiment && this.props.infoPaiment.cvv} required pattern="\d{3}"/>
+                    <input type="text" name="numero" placeholder="0000000000000000" defaultValue={this.props.user.id === this.props.infoPaiment.idClient && this.props.infoPaiment? this.props.infoPaiment.numero: ""}required pattern="\d{16}"/>
+                        <input type="text" name="expiration" placeholder="MM/YY" defaultValue={this.props.user.id === this.props.infoPaiment.idClient && this.props.infoPaiment? this.props.infoPaiment.expiration: ""} required pattern="^(0[1-9]|1[0-2])/(\d{2})$"/>
+                        <input type="text" name="cvv"placeholder="123" defaultValue={this.props.user.id === this.props.infoPaiment.idClient && this.props.infoPaiment? this.props.infoPaiment.cvv:""} required pattern="\d{3}"/>
                         <input type='checkbox' id='enregistrer' name='enregistrer'/>
                         <label htmlFor="enregistrer">Enregistrer les informations de paiement</label>
                         <button type="submit">Confirmer le paiement</button>
@@ -212,6 +213,7 @@ class PageClient extends Component
                     <button name="modifierProfil" onClick={this.modifierOngletActif}>Modifier mon profil</button>
                     <button name="prendreRdv" onClick={this.modifierOngletActif}>Prise de rendez-vous</button>
                     <button name="mesRdvs" onClick={this.modifierOngletActif}>Mes rendez-vous</button>
+                    <button name="factures" onClick={this.modifierOngletActif}>Mes factures</button>
                     <button name="gestionVehicule" onClick={this.modifierOngletActif}>Mes véhicules</button>
                 </nav>
 
@@ -311,23 +313,23 @@ class PageClient extends Component
                         </div>
                     </div>
                     )}
-                    {ongletActif === 'factures' && (
+                    {this.state.ongletActif === 'factures' && (
                         <div>
                             <h3>Mes Factures</h3>
                             <table>
                             <thead>
                                 <tr>
-                                <th>Nom</th>
-                                <th>Prénom</th>
+                                <th>Nom du client</th>
+                                <th>Nom du mécanicien</th>
                                 <th>État du Paiement</th>
-                                <th>Montant Perçu</th>
+                                <th>Montant à Payer</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.props.rdvs.map((rdv) => (
+                                {this.props.rdvs.filter(rdv =>  rdv.clientId == this.props.user.id).map((rdv) => (
                                 <tr key={rdv.rdvId}>
-                                    <td>{rdv.nom}</td>
-                                    <td>{rdv.prenom}</td>
+                                    <td>{rdv.client}</td>
+                                    <td>{rdv.mecanicien}</td>
                                     <td>{rdv.estPayer ? 'Oui' : 'En attente de paiement'}</td>
                                     <td>{rdv.cout}$</td>
                                 </tr>

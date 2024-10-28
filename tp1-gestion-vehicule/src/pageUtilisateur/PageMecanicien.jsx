@@ -74,6 +74,7 @@ class PageMecanicien extends Component
                 <nav style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
                     <button name="modifierProfil" onClick={this.modifierOngletActif}>Modifier mon profil</button>
                     <button name="mesRdvs" onClick={this.modifierOngletActif}>Mes rendez-vous</button>
+                    <button name="factures" onClick={this.modifierOngletActif}>Mes factures</button>
                     <button name="mesBenefices" onClick={this.calculerBenefice}>Mes bénéfices</button>
                 </nav>
 
@@ -136,25 +137,25 @@ class PageMecanicien extends Component
                         </table>
                     </div>
                     )}
-                    {ongletActif === 'factures' && (
+                    {this.state.ongletActif === 'factures' && (
                         <div>
                             <h3>Mes Factures</h3>
-                            <table style={tableStyle}>
+                            <table>
                             <thead>
                                 <tr>
-                                <th>Nom</th>
-                                <th>Prénom</th>
+                                <th>Nom du client</th>
+                                <th>Nom du mécanicien</th>
                                 <th>État du Paiement</th>
                                 <th>Montant Perçu</th>
                                 <th>Bénéfices</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {rdvs.map((rdv, index) => (
-                                <tr key={index}>
-                                    <td>{rdv.client.lastName}</td>
-                                    <td>{rdv.client.firstName}</td>
-                                    <td>{rdv.paiement ? 'Oui' : 'En attente de paiement'}</td>
+                                {this.props.rdvs.filter(rdv =>  rdv.mecanicienId == this.props.user.id).map((rdv) => (
+                                    <tr key={rdv.rdvId}>
+                                    <td>{rdv.client}</td>
+                                    <td>{rdv.mecanicien}</td>
+                                    <td>{rdv.estPayer ? 'Oui' : 'En attente de paiement'}</td>
                                     <td>{rdv.cout}$</td>
                                     <td>{(rdv.cout *0.15).toFixed(2)}$</td>
                                 </tr>
