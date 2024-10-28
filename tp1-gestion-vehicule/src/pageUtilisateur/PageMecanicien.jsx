@@ -1,108 +1,171 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
+import { obtenirRdvsAPI } from '../actions/ActionsRdvs';
+import Rdv from '../gestionRdv/Rdv';
+import { connect } from 'react-redux';
+import axios from 'axios';
 
-const mecaniciens = [
-  { id: 1, username: "kminchelle", firstName: "Kurtis", lastName: "Minchelle", phone: "123-456-7890", address: "1234 Maple St." },
-  { id: 2, username: "atuny0", firstName: "Anabelle", lastName: "Tuney", phone: "234-567-8901", address: "2345 Oak St." },
-  { id: 3, username: "hbingley1", firstName: "Henry", lastName: "Bingley", phone: "345-678-9012", address: "3456 Pine St." },
-  { id: 4, username: "darvink", firstName: "Darvin", lastName: "Kinsley", phone: "456-789-0123", address: "4567 Birch St." },
-];
-
-const PageMecanicien = () => {
-  const [mecanicien, setMecanicien] = useState(mecaniciens[0]); // Définir un mécanicien par défaut
-  const [rendezVousState, setRendezVousState] = useState([]);
-  const [ongletActif, setOngletActif] = useState('profil');
-  const [commentaireRefus, setCommentaireRefus] = useState('');
-
-  useEffect(() => {
-    const allRendezVous = JSON.parse(localStorage.getItem('rdvs')) || [];
-    if (mecanicien) {
-      const filteredRendezVous = allRendezVous.filter(rdv => rdv.mecanicienId === mecanicien.id);
-      setRendezVousState(filteredRendezVous);
+class PageMecanicien extends Component
+{
+    constructor(props) 
+    {
+        super(props);
+        this.state = 
+        {
+            ongletActif: "modifierProfil",
+            dateSelectionnee: new Date(),
+            message: "",
+            erreur: false,
+            benefices:0,
+        };
     }
-  }, [mecanicien]);
 
-  const sauvegarderProfil = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const updatedMecanicien = {
-      ...mecanicien,
-      firstName: formData.get('prenom'),
-      lastName: formData.get('nom'),
-      phone: formData.get('telephone'),
-      address: formData.get('adresse')
+    componentDidMount()
+    {
+        this.obtenirRendezVous();
     };
-    setMecanicien(updatedMecanicien);
-    alert("Profil mis à jour avec succès.");
-  };
 
-  const refuserRendezVous = (index) => {
-    const updatedRendezVous = [...rendezVousState];
-    updatedRendezVous[index].statut = 'Refusé';
-    updatedRendezVous[index].commentaire = commentaireRefus;
-    setRendezVousState(updatedRendezVous);
-    localStorage.setItem('rdvs', JSON.stringify(updatedRendezVous));
-  };
+    calculerBenefice = (e) =>
+    {
+        const totalCouts = this.props.rdvs.reduce((total, rdv) => total + (typeof rdv.cout === 'number' ? rdv.cout : parseFloat(rdv.cout) || 0), 0);
+        const benefices = Math.round(totalCouts * 0.15);
+        this.setState({ benefices: benefices});
+        this.modifierOngletActif(e);
+    }
 
-  return (
-    <div className="mecanicien-container" style={{ fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: 'auto' }}>
-      <div className="user-info">
-        <h2>Bienvenue {mecanicien.firstName} {mecanicien.lastName} dans votre espace Mécanicien</h2>
-        <p><strong>Téléphone :</strong> {mecanicien.phone || "Non disponible"}</p>
-        <p><strong>Adresse :</strong> {mecanicien.address || "Non disponible"}</p>
-      </div>
-      <nav className="tabs" style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
-        <button style={{ cursor: 'pointer' }} className={ongletActif === 'profil' ? 'active' : ''} onClick={() => setOngletActif('profil')}>
-          Modifier mon profil
-        </button>
-        <button style={{ cursor: 'pointer' }} className={ongletActif === 'gererRendezVous' ? 'active' : ''} onClick={() => setOngletActif('gererRendezVous')}>
-          Gérer les rendez-vous
-        </button>
-      </nav>
+    obtenirRendezVous()
+    {
+        const url = "https://dummyjson.com/c/8e46-5801-45bc-8167";//Avec notre "vrai" api nous ajouterions l'id de l'utilisateur pour obtenir seulement ses rendez-vous
+        this.props.obtenirRdvsAPI(url);
+    };
 
-      <div className="content">
-        {ongletActif === 'profil' && (
-          <form onSubmit={sauvegarderProfil}>
-            <input type="text" name="prenom" placeholder="Prénom" defaultValue={mecanicien.firstName} />
-            <input type="text" name="nom" placeholder="Nom" defaultValue={mecanicien.lastName} />
-            <input type="text" name="telephone" placeholder="Téléphone" defaultValue={mecanicien.phone} />
-            <input type="text" name="adresse" placeholder="Adresse" defaultValue={mecanicien.address} />
-            <button type="submit">Sauvegarder</button>
-          </form>
-        )}
-        {ongletActif === 'gererRendezVous' && (
-          <div className="rendezvous-tab">
-            <h2>Gérer les rendez-vous</h2>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ backgroundColor: '#f2f2f2', borderBottom: '1px solid #ddd' }}>
-                  <th style={{ padding: '8px', border: '1px solid #ddd' }}>Client</th>
-                  <th style={{ padding: '8px', border: '1px solid #ddd' }}>Service</th>
-                  <th style={{ padding: '8px', border: '1px solid #ddd' }}>Date</th>
-                  <th style={{ padding: '8px', border: '1px solid #ddd' }}>Statut</th>
-                  <th style={{ padding: '8px', border: '1px solid #ddd' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rendezVousState.map((rv, index) => (
-                  <tr key={index}>
-                    <td style={{ padding: '8px', border: '1px solid #ddd' }}>{rv.client}</td>
-                    <td style={{ padding: '8px', border: '1px solid #ddd' }}>{rv.service}</td>
-                    <td style={{ padding: '8px', border: '1px solid #ddd' }}>{rv.date}</td>
-                    <td style={{ padding: '8px', border: '1px solid #ddd' }}>{rv.statut}</td>
-                    <td style={{ padding: '8px', border: '1px solid #ddd' }}>
-                      <button onClick={() => accepterRendezVous(index)}>Accepter</button>
-                      <input type="text" placeholder="Commentaire de refus" value={commentaireRefus} onChange={e => setCommentaireRefus(e.target.value)} />
-                      <button onClick={() => refuserRendezVous(index)}>Refuser</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+    modifierOngletActif = (e) => 
+    {
+        this.setState({ ongletActif: e.target.name, message: ""});
+    };
+
+    sauvegarderNouvelleInfo = async (e) => 
+        {
+            e.preventDefault();
+            const donneeFormulaire = new FormData(e.target);
+            
+            let utilisateur = {
+                lastName: donneeFormulaire.get('nom'),
+                firstName: donneeFormulaire.get('prenom'),
+                phone: donneeFormulaire.get('tel'),
+                address: { adresse: donneeFormulaire.get('adresse') },
+            };
+    
+            const reponse = await axios.patch(`https://dummyjson.com/users/${this.props.user.id}`,utilisateur);
+    
+            if(reponse.status !== 200)
+            {
+                this.setState({message: "Modification du profil à échoué!",erreur:true});
+            }
+            else
+            {
+                this.setState({message: "Modification du profil réussi !",erreur:false});
+            }
+    
+            utilisateur = {...this.props.user};
+            utilisateur.lastName = donneeFormulaire.get('nom');
+            utilisateur.firstName = donneeFormulaire.get('prenom');
+    
+            this.props.setUser(utilisateur);
+    };
+
+    render()
+    {
+        return (
+            <div className="client-container">
+                <div>
+                    <h2>Bienvenue {this.props.user.firstName} {this.props.user.lastName} dans votre espace de Mécanicien</h2>
+                </div>
+
+                <nav style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
+                    <button name="modifierProfil" onClick={this.modifierOngletActif}>Modifier mon profil</button>
+                    <button name="mesRdvs" onClick={this.modifierOngletActif}>Mes rendez-vous</button>
+                    <button name="mesBenefices" onClick={this.calculerBenefice}>Mes bénéfices</button>
+                </nav>
+
+                <div>
+                    {this.state.ongletActif === 'modifierProfil' && (
+                    <div>
+                        <h3>Modifier mon profil</h3>
+                        <form onSubmit={this.sauvegarderNouvelleInfo}>
+                            <input type="text" name="nom" placeholder="Nom" required />
+                            <input type="text" name="prenom" placeholder="Prénom" required />
+                            <input type="tel" name="tel" placeholder="Téléphone" required />
+                            <input type="text" name="adresse" placeholder="Adresse" required />
+                            <button type="submit">Sauvegarder</button>
+                        </form>
+                        {this.state.message && <p style={{ color: 'green' }}>{this.state.message}</p>}
+                    </div>
+                    )}
+
+                    {this.state.ongletActif === 'mesRdvs' && (
+                    <div>
+                        <h3>Mes rendez-vous</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Heure</th>
+                                    <th>Durée</th>
+                                    <th>Client</th>
+                                    <th>Véhicule</th>
+                                    <th>Raison</th>
+                                    <th>Statut</th>
+                                    <th>Coût</th>
+                                    <th>Commentaire</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {this.props.rdvs.map(rdv => (
+                                <Rdv
+                                    key={rdv.rdvId}
+                                    client={rdv.client}
+                                    clientId={rdv.clientId}
+                                    idVehicule={rdv.idVehicule}
+                                    infoVehicule={rdv.infoVehicule}
+                                    besoins={rdv.besoins}
+                                    mecanicien={rdv.mecanicien}
+                                    mecanicienId={rdv.mecanicienId}
+                                    date={rdv.date}
+                                    heure={isNaN(rdv.heure) ? ("Not specified") : (rdv.heure)}
+                                    duree={isNaN(rdv.duree) ? ("Not specified") : (rdv.duree)}
+                                    rdvId={rdv.rdvId}
+                                    commentaire={rdv.commentaire}
+                                    confirmer={rdv.confirmer}
+                                    etat={rdv.etat}
+                                    estClient={false}
+                                    cout={rdv.cout}
+                                    estPayer={rdv.estPayer}
+                                />
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    )}
+                    {this.state.ongletActif === 'mesBenefices' &&
+                    <div>
+                        <h3>Mes bénéfices</h3>
+                        <h4>{this.state.benefices} $</h4>
+                    </div>
+                    }
+                </div>
+            </div>
+        )
+    };
 };
 
-export default PageMecanicien;
+const mapStateToProps = (state) => ({
+  user: state.user,
+  rdvs: state.rdvs,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    setUser: (user) => dispatch({type: 'SET_USER',payload:user}),
+    obtenirRdvsAPI: (url) => dispatch(obtenirRdvsAPI(url)),
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(PageMecanicien);

@@ -20,13 +20,11 @@ const App = () =>
     }
 
     return (
-        <div className="app-container">
-            <div className="login-container">
-                <h1>Bienvenue</h1>
-                <button onClick={gererBtnInscription}>Inscription</button>
-                <button onClick={gererBtnClient}>Connexion Client</button>
-                <button onClick={gererBtnMecanicien}>Connexion Mécanicien</button>
-            </div>
+        <div className="login-container">
+            <h1>Bienvenue</h1>
+            <button onClick={gererBtnInscription}>Inscription</button>
+            <button onClick={gererBtnClient}>Connexion Client</button>
+            <button onClick={gererBtnMecanicien}>Connexion Mécanicien</button>
         </div>
     );
 };

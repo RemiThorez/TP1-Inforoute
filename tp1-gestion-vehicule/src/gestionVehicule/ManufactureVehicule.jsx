@@ -14,7 +14,6 @@ class ManufactureVehicule
         const vehicule = {idVehicule: idVehicule,fabricant: reponse.data.Results[0].Make,modele: reponse.data.Results[0].Model,annee: reponse.data.Results[0].ModelYear,idUser:idUser};
 
         this.dispatch(ajouterVehiculeAPI(vehicule));
-        return vehicule;
         
     };
 
@@ -23,7 +22,6 @@ class ManufactureVehicule
         const vehicule = {idVehicule:idVehicule, fabricant:fabricant, modele:modele, annee:annee, idUser:idUser}
 
         this.dispatch(ajouterVehiculeAPI(vehicule));
-        return vehicule;
     };
 }
 

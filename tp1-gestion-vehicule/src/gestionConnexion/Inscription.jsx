@@ -70,7 +70,7 @@ const PageInscription = () =>
                     <option value="mecanicien">Mécanicien</option>
                 </select>
                 <button type="submit">S'inscrire</button>
-                {messageErreur && <p className="error-message">{messageErreur}</p>}
+                {messageErreur && <p style={{ color: 'red' }}>{messageErreur}</p>}
             </form>
         </div>
     );

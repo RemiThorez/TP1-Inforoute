@@ -9,6 +9,10 @@ const etatInitial =
     indexRdv: 0,
     indexVehicule: 0,
     user: null,
+    mecaniciens: [],
+    heuresDispos: [],
+    datesDisponibles: [], // Nous utilisons seulement les dates disponibles, si une date n'est pas la cela veut dire qu'il n'y a pas de disponibilité.
+    infoPaiment: undefined,
 }
 
 const reducer = (state = etatInitial,action) =>
@@ -26,9 +30,9 @@ const reducer = (state = etatInitial,action) =>
         case "MODIFIER_VEHICULE":
             return {...state,vehicules: state.vehicules.map(v => v.idVehicule === action.payload.idVehicule ? { ...v, ...action.payload }: v)};
         case "SET_INDEX_VEHICULE":
-            return{...state, indexVehicule:action.payload};
+            return{...state, indexVehicule:action.payload+1};
         case "SET_INDEX_RDV":
-            return{...state, indexRdv:action.payload};
+            return{...state, indexRdv:action.payload+1};
         case "SET_USER":
             return{...state, user:action.payload};
         case "SET_VEHICULES_EXISTANT":
@@ -38,15 +42,25 @@ const reducer = (state = etatInitial,action) =>
             }
             return{...state, vehicules: action.payload};
         case "MODIFIER_RDV":
-            return {...state,rdvs: state.rdvs.map(rdv => rdv.rdvId === action.payload.rdvId ? { ...v, ...action.payload }: v)};
+            return {...state,rdvs: state.rdvs.map(rdv => rdv.rdvId === action.payload.rdvId ? { ...rdv, ...action.payload }: rdv)};
         case "AJOUTER_RDV":
-            return{...state, rdv:[...state.rdv,action.payload], indexRdv: state.indexRdv + 1};
+            return{...state, rdvs:[...state.rdvs,action.payload], indexRdv: state.indexRdv + 1};
         case "SET_RDVS_EXISTANT":
             if(action.payload.length === 0)
             {
                 return{...state};
             }
             return{...state, rdvs: action.payload};
+        case "SET_MECANICIENS_EXISTANT":
+            return{...state, mecaniciens: action.payload};
+        case "SET_HEURES_DISPOS_EXISTANT":
+            return{...state, heuresDispos: action.payload};
+        case "SET_DATES_DISPOS_EXISTANT":
+            return{...state, datesDisponibles: action.payload};
+        case "AJOUTER_INFO_PAIMENT":
+            return{...state, infoPaiment:action.payload};
+        case "SET_ESTPAYER":
+            return{...state, rdvs:state.rdvs.map(rdv => rdv.rdvId === action.payload.rdvId ? { ...rdv,estPayer: true }: rdv)}
         default:
             return state;
     }

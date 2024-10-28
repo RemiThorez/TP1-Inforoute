@@ -17,8 +17,8 @@ class GestionVehicule extends Component
             ajouterVehiculeComplexeActif: false,
             optionsModeles: [],
             fabricant: "",
+            formulaireAfficher: false,
         }
-
         this.manufactureVehicule = new ManufactureVehicule(this.props.dispatch);
     }
 
@@ -30,6 +30,7 @@ class GestionVehicule extends Component
             ajouterVehiculeVINActif: false,
             ajouterVehiculeComplexeActif: false
         })
+        this.props.modifierCacher();
     }
     gererBtnAjouterVehiculeVIN = () =>
     {
@@ -38,6 +39,7 @@ class GestionVehicule extends Component
             ajouterVehiculeVINActif: true,
             ajouterVehiculeComplexeActif: false
         })
+        this.props.modifierCacher();
     }
     gererBtnAjouterVehiculeComplexe = () =>
     {
@@ -46,19 +48,23 @@ class GestionVehicule extends Component
             ajouterVehiculeVINActif: false,
             ajouterVehiculeComplexeActif: true
         })
+        this.props.modifierCacher();
     }
 
     gererBtnAnnulerAjoutVehicule = () =>
     {
         this.setState({ajouterVehiculeActif: false})
+        this.props.afficher();
     }
     gererBtnAnnulerAjoutVehiculeVIN = () =>
     {
         this.setState({ajouterVehiculeVINActif: false})
+        this.props.afficher();
     }
     gererBtnAnnulerAjoutVehiculeComplexe = () =>
     {
         this.setState({ajouterVehiculeComplexeActif: false})
+        this.props.afficher();
     }
 
     creerVehicule = (e) =>
@@ -70,6 +76,8 @@ class GestionVehicule extends Component
         const annee = donneeFormulaire.get("annee");
 
         this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,this.props.indexVehicule,this.props.user.id)
+        this.setState({ajouterVehiculeActif: false});
+        this.props.afficher();
     }
     //"JS2YB5A20A6300765"
     creerVehiculeVIN = (e) =>
@@ -79,6 +87,8 @@ class GestionVehicule extends Component
         const vin = donneeFormulaire.get("vin");
 
         this.manufactureVehicule.CreerVehiculeVIN(vin, this.props.indexVehicule,this.props.user.id)
+        this.setState({ajouterVehiculeVINActif: false});
+        this.props.afficher();
     }
     
     creerVehiculeComplexe = async (e) =>
@@ -94,6 +104,8 @@ class GestionVehicule extends Component
         {
             //Ajout du véhicule
             this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),this.props.indexVehicule,this.props.user.id);
+            this.setState({ajouterVehiculeComplexeActif: false});
+            this.props.afficher();
         
         }
         else if(fabricant == "") 
@@ -131,7 +143,7 @@ class GestionVehicule extends Component
         {
             // On cherche le modèle
             const reponse = await axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${fabricant}/modelyear/${donneeFormulaire.get("annee")}?format=json`);
-            let optionsModele = reponse.data.Results.map((modele)=> <option key={optionsModele.length} value={modele.Model_Name}>{modele.Model_Name}</option>);
+            let optionsModele = reponse.data.Results.map((modele,i)=> <option key={i} value={modele.Model_Name}>{modele.Model_Name}</option>);
             if(optionsModele.length == 0)
             {
                 optionsModele.push(<option key={0} value={0}>Aucun modèle trouvé pour cette date et ce fabricant.</option>);
@@ -151,13 +163,13 @@ class GestionVehicule extends Component
 
         return(
             <>
-            {!this.props.cacher &&
-            <div>
+            
+            <div>{!this.props.cacher &&
                 <div>
                     <button onClick={this.gererBtnAjouterVehicule}>Ajouter véhicule</button>
                     <button onClick={this.gererBtnAjouterVehiculeVIN}>Ajouter véhicule avec VIN</button>
                     <button onClick={this.gererBtnAjouterVehiculeComplexe}>Ajouter véhicule avec informations manquantes</button>
-                </div>
+                </div>}
            
                 <div> 
                     {this.state.ajouterVehiculeActif && 
@@ -211,9 +223,10 @@ class GestionVehicule extends Component
                         <button onClick={this.gererBtnAnnulerAjoutVehiculeComplexe}>Annuler</button>
                     </form>}
                 </div>
-                </div>}
-                {this.props.vehicules.map((vehicule) => (<Vehicule key={vehicule.idVehicule} idVehicule={vehicule.idVehicule} fabricant={vehicule.fabricant} modele={vehicule.modele} annee={vehicule.annee}/>))}
-                
+                </div>
+                <div className="contenant-debordant">
+                    {this.props.vehicules.map((vehicule) => (<Vehicule key={vehicule.idVehicule} idVehicule={vehicule.idVehicule} fabricant={vehicule.fabricant} modele={vehicule.modele} annee={vehicule.annee}/>))}
+                </div>
             </>
         );
     }
@@ -226,4 +239,10 @@ const mapStateToProps = (state) => ({
     user: state.user,
 });
 
-export default connect(mapStateToProps)(GestionVehicule);
+const mapDispatchToProps = (dispatch) => ({
+    modifierCacher: () => dispatch({ type: 'CACHER' }),
+    afficher: () => dispatch({ type: 'AFFICHER' }),
+    dispatch,
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(GestionVehicule);

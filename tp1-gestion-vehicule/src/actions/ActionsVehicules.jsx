@@ -13,7 +13,7 @@ export const obtenirVehiculesAPI = (url) =>
                 modele: v.modele,
                 annee: v.annee
             }));
-            console.log(vehicules);
+
             dispatch({ type: "SET_VEHICULES_EXISTANT", payload: vehicules });
             const index = vehicules[vehicules.length-1].idVehicule;
             if(index > 0)
@@ -60,7 +60,7 @@ export const supprimerVehiculeAPI = (idVehicule) =>
     {
         try
         {
-            const reponse = await axios.patch("https://dummyjson.com/c/8c5e-a0a8-43cb-959f",idVehicule); // Dans notre api finale nous ajouterons le vehicule dans le body
+            const reponse = await axios.delete("https://dummyjson.com/c/867d-3986-4d85-872c",idVehicule); // Dans notre api finale nous ajouterons le vehicule dans le body
 
             if(reponse.status === 200)
             {
@@ -85,7 +85,7 @@ export const ajouterVehiculeAPI = (vehicule) =>
     {
         try
         {
-            const reponse = await axios.patch("https://dummyjson.com/c/c0dd-d82d-42bf-9137",vehicule); // Dans notre api finale nous ajouterons le vehicule dans le body
+            const reponse = await axios.post("https://dummyjson.com/c/08bc-b7f3-4de3-a8a7",vehicule); // Dans notre api finale nous ajouterons le vehicule dans le body
 
             if(reponse.status === 200)
             {

@@ -24,8 +24,9 @@ class Vehicule extends Component
         this.props.supprimerVehiculeAPI(this.state.idVehicule);
     }
 
-    modifierEtatFormulaire = () =>
+    modifierEtatFormulaire = (e) =>
     {
+        e.preventDefault();
         this.setState({formulaireActif: !this.state.formulaireActif});
         if(this.props.cacher)
         {
