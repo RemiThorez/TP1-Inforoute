@@ -23,8 +23,33 @@ const PageConnexionMecanicien = ({ setUser }) =>
 
 			if (reponse.status === 200) 
 			{
-                setUser(reponse.data);
-				navigate('/pagemecanicien');
+                try 
+                {
+                    const reponsInfoSupp = await axios.get(`https://dummyjson.com/users/${reponse.data.id}`);
+
+                    if (reponsInfoSupp.status === 200)
+                    {
+                        const infoSupplementaire = {adresse:{adresse: reponsInfoSupp.data.address.address}, tel: reponsInfoSupp.data.phone};
+                        const utilisateurComplet = 
+                        {
+                            ...reponse.data,
+                            ...infoSupplementaire
+                        };
+    
+                        setUser(utilisateurComplet);
+                        navigate('/pagemecanicien');
+                    }
+                    else
+                    {
+                        setMessageErreur("Erreur lors de la récupération des informations!");
+                    }
+                    
+                }
+                catch (error) 
+                {
+                    setMessageErreur("Erreur lors de la récupération des informations!", error);
+                }
+                
 			} 
 			else 
 			{
@@ -33,7 +58,7 @@ const PageConnexionMecanicien = ({ setUser }) =>
 		} 
 		catch (error) 
 		{
-			setMessageErreur("Erreur lors de la connexion!");
+			setMessageErreur("Erreur lors de la connexion!",error);
 		}
 	};
 

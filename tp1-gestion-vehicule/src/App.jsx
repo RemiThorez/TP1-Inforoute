@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './css/App.css';
 import { obtenirVehiculesAPI } from './actions/ActionsVehicules';
-import { obtenirMecaniciensAPI, obtenirRdvsAPI } from './actions/ActionsRdvs';
+import { obtenirRdvsAPI } from './actions/ActionsRdvs';
 
 const App = () => 
 {
@@ -14,6 +14,7 @@ const App = () =>
     {
         if (!initialiser) 
         {
+            localStorage.clear();
             initialisationApp();
             setInitialiser(true);
         }
@@ -26,7 +27,6 @@ const App = () =>
         console.log("Initialisation de l'application...");
         obtenirVehiculesAPI("https://dummyjson.com/c/d8db-c2db-4187-85d5");
         obtenirRdvsAPI("https://dummyjson.com/c/8e46-5801-45bc-8167");
-        obtenirMecaniciensAPI();
     };
 
     const gererBtnInscription=() =>

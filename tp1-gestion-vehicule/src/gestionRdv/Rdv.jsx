@@ -12,16 +12,16 @@ class Rdv extends Component
         this.state = 
         { 
             client: props.client || null,
-            clientId: props.clientId ||-1,
-            idVehicule: props.idVehicule || -1,
+            clientId: props.clientId,
+            idVehicule: props.idVehicule,
             infoVehicule: props.infoVehicule || "",
             besoins: props.besoins || "",
             mecanicien: props.mecanicien || null,
-            mecanicienId: props.mecanicienId ||-1,
+            mecanicienId: props.mecanicienId,
             date:props.date || new Date(),
             heure: props.heure || NaN,
             duree: props.duree || NaN,
-            rdvId: props.rdvId || -1,
+            rdvId: props.rdvId,
             commentaire: props.commentaire || "",
             confirmer: props.confirmer || false, //Signifie attente de la confirmation par le mécanicien
             etat: props.etat || false, // Détermine si le rdv existe ou s'il est annuler.
@@ -75,6 +75,11 @@ class Rdv extends Component
         this.setState({[e.target.name]: e.target.value})
     }
 
+    gererBtnAnnuler= () =>
+    {
+        
+    }
+
     gererEnvoiModification = () =>
     {
         this.setState({modifier: false});
@@ -115,9 +120,10 @@ class Rdv extends Component
                     {!this.state.estClient && !this.state.confirmer &&
                     <>
                         {this.state.modifier || this.state.supprimer ? 
-                        (
+                        (<>
                             <button onClick={this.gererBtnConfirmer}>Confirmer</button>
-                        ) : 
+                            <button onClick={this.gererBtnAnnuler}>Annuler</button>
+                        </>) : 
                         (<>
                             <button onClick={this.modifierEtatFormulaire}>Confirmer</button>
                             <button onClick={this.gererBtnRefuser}>Refuser</button>

@@ -67,6 +67,8 @@ class PageMecanicien extends Component
             <div className="client-container">
                 <div>
                     <h2>Bienvenue {this.props.user.firstName} {this.props.user.lastName} dans votre espace de Mécanicien</h2>
+                    <p><strong>Téléphone :</strong> {this.props.user.tel || "Non disponible"}</p>
+                    <p><strong>Adresse :</strong> {this.props.user.adresse?.adresse || "Non disponible"}</p>
                 </div>
 
                 <nav style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
@@ -134,9 +136,36 @@ class PageMecanicien extends Component
                         </table>
                     </div>
                     )}
+                    {ongletActif === 'factures' && (
+                        <div>
+                            <h3>Mes Factures</h3>
+                            <table style={tableStyle}>
+                            <thead>
+                                <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>État du Paiement</th>
+                                <th>Montant Perçu</th>
+                                <th>Bénéfices</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {rdvs.map((rdv, index) => (
+                                <tr key={index}>
+                                    <td>{rdv.client.lastName}</td>
+                                    <td>{rdv.client.firstName}</td>
+                                    <td>{rdv.paiement ? 'Oui' : 'En attente de paiement'}</td>
+                                    <td>{rdv.cout}$</td>
+                                    <td>{(rdv.cout *0.15).toFixed(2)}$</td>
+                                </tr>
+                                ))}
+                            </tbody>
+                            </table>
+                        </div>
+                    )}
                     {this.state.ongletActif === 'mesBenefices' &&
                     <div>
-                        <h3>Mes bénéfices</h3>
+                        <h3>Mes bénéfices totales</h3>
                         <h4>{this.state.benefices} $</h4>
                     </div>
                     }

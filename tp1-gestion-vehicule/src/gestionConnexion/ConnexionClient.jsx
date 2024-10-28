@@ -23,8 +23,32 @@ const PageConnexionClient = ({ setUser }) =>
 
             if (reponse.status === 200) 
             {
-                setUser(reponse.data);
-                navigate('/pageclient');
+                try 
+                {
+                    const reponsInfoSupp = await axios.get(`https://dummyjson.com/users/${reponse.data.id}`);
+
+                    if (reponsInfoSupp.status === 200)
+                    {
+                        const infoSupplementaire = {adresse:{adresse: reponsInfoSupp.data.address.address}, tel: reponsInfoSupp.data.phone};
+                        const utilisateurComplet = 
+                        {
+                            ...reponse.data,
+                            ...infoSupplementaire
+                        };
+    
+                        setUser(utilisateurComplet);
+                        navigate('/pageclient');
+                    }
+                    else
+                    {
+                        setMessageErreur("Erreur lors de la récupération des informations!");
+                    }
+                    
+                }
+                catch (error) 
+                {
+                    setMessageErreur("Erreur lors de la récupération des informations!", error);
+                }
             } 
             else 
             {

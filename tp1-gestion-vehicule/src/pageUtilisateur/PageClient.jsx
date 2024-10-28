@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Calendar from 'react-calendar';
 import GestionVehicule from '../gestionVehicule/GestionVehicule';
 import { connect } from 'react-redux';
-import { obtenirHeureDispoMecaniciensAPI,obtenirDatesDisponiblesAPI,ajouterRdvAPI,effectuerPaimentAPI,enregistreInfoPaimentAPI } from '../actions/ActionsRdvs';
+import { obtenirMecaniciensAPI, obtenirHeureDispoMecaniciensAPI,obtenirDatesDisponiblesAPI,ajouterRdvAPI,effectuerPaimentAPI,enregistreInfoPaimentAPI } from '../actions/ActionsRdvs';
 import Rdv from '../gestionRdv/Rdv';
 import axios from 'axios';
 import '../css/App.css';
@@ -22,6 +22,16 @@ class PageClient extends Component
             rdvId:-1,
         };
     }
+
+    componentDidMount()
+    {
+        this.obtenirMecanicien();
+    };
+
+    obtenirMecanicien = () =>
+    {
+        this.props.obtenirMecaniciensAPI();
+    };
 
     ouvrirDialogPaiment = (rdvId) => 
     {
@@ -151,6 +161,8 @@ class PageClient extends Component
         utilisateur = {...this.props.user};
         utilisateur.lastName = donneeFormulaire.get('nom');
         utilisateur.firstName = donneeFormulaire.get('prenom');
+        utilisateur.tel = donneeFormulaire.get('tel');
+        utilisateur.adresse.adresse = donneeFormulaire.get('adresse');
 
         this.props.setUser(utilisateur);
     };
@@ -192,6 +204,8 @@ class PageClient extends Component
 
                 <div>
                     <h2>Bienvenue {this.props.user.firstName} {this.props.user.lastName} dans votre espace Client</h2>
+                    <p><strong>Téléphone :</strong> {this.props.user.tel || "Non disponible"}</p>
+                    <p><strong>Adresse :</strong> {this.props.user.adresse?.adresse || "Non disponible"}</p>
                 </div>
 
                 <nav style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
@@ -297,6 +311,31 @@ class PageClient extends Component
                         </div>
                     </div>
                     )}
+                    {ongletActif === 'factures' && (
+                        <div>
+                            <h3>Mes Factures</h3>
+                            <table>
+                            <thead>
+                                <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>État du Paiement</th>
+                                <th>Montant Perçu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.props.rdvs.map((rdv) => (
+                                <tr key={rdv.rdvId}>
+                                    <td>{rdv.nom}</td>
+                                    <td>{rdv.prenom}</td>
+                                    <td>{rdv.estPayer ? 'Oui' : 'En attente de paiement'}</td>
+                                    <td>{rdv.cout}$</td>
+                                </tr>
+                                ))}
+                            </tbody>
+                            </table>
+                        </div>
+                    )}
 
                     {this.state.ongletActif === 'gestionVehicule' &&
                     <div>
@@ -332,6 +371,7 @@ const mapDispatchToProps = (dispatch) => ({
     ajouterRdvAPI: (rdv) => dispatch(ajouterRdvAPI(rdv)),
     enregistreInfoPaimentAPI: (infoPaiment) => dispatch(enregistreInfoPaimentAPI(infoPaiment)),
     effectuerPaimentAPI: (infoPaiment, idMecanicien) => dispatch(effectuerPaimentAPI(infoPaiment, idMecanicien)),
+    obtenirMecaniciensAPI: () => dispatch(obtenirMecaniciensAPI()),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(PageClient);
