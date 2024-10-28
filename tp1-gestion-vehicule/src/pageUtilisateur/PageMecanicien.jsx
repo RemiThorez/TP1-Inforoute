@@ -108,7 +108,7 @@ class PageMecanicien extends Component
                                 </tr>
                             </thead>
                             <tbody>
-                            {this.props.rdvs.map(rdv => (
+                            {this.props.rdvs.filter(rdv =>  rdv.mecanicienId == this.props.user.id).map( rdv=>
                                 <Rdv
                                     key={rdv.rdvId}
                                     client={rdv.client}
@@ -129,7 +129,7 @@ class PageMecanicien extends Component
                                     cout={rdv.cout}
                                     estPayer={rdv.estPayer}
                                 />
-                            ))}
+                            )}
                             </tbody>
                         </table>
                     </div>

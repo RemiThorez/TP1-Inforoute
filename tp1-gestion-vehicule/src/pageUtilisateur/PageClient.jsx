@@ -269,7 +269,7 @@ class PageClient extends Component
                                 </tr>
                             </thead>
                             <tbody>
-                            {this.props.rdvs.map(rdv => (
+                            {this.props.rdvs.filter(rdv =>  rdv.clientId == this.props.user.id).map( rdv=>
                                 <Rdv
                                     key={rdv.rdvId}
                                     client={rdv.client}
@@ -291,7 +291,7 @@ class PageClient extends Component
                                     estPayer={rdv.estPayer}
                                     ouvrirDialogPaiment={this.ouvrirDialogPaiment}
                                 />
-                            ))}
+                            )}
                             </tbody>
                         </table>
                         </div>
