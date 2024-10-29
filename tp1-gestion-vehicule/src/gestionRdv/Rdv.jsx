@@ -94,12 +94,12 @@ class Rdv extends Component
                 <tr key={this.state.rdvId}>
                     <td>{this.state.date}</td>
                     <td>{this.state.heure}</td>
-                    <td>{this.state.modifier && !this.state.estClient ? <input type='number' name='duree' style={{width:'50px'}} value={this.state.duree || 0} onChange={this.gererModification}></input> : this.state.duree}</td>
+                    <td>{this.state.modifier && !this.state.estClient && this.state.etat ? <input type='number'min="0" name='duree' style={{width:'50px'}} value={this.state.duree || 0} onChange={this.gererModification}></input> : this.state.duree}</td>
                     <td>{this.state.estClient ? this.state.mecanicien : this.state.client}</td>
                     <td>{this.state.infoVehicule}</td>
                     <td>{this.state.modifier && this.state.estClient ? (<textarea value={this.state.besoins} name='besoins' onChange={this.gererModification} required />): (this.state.besoins)}</td>
                     <td>{this.state.etat ? (this.state.confirmer ? ("Confirmer"):("En attente")):(this.state.confirmer ? ("Annuler"):("En attente"))}</td>
-                    <td>{this.state.modifier && !this.state.estClient ? <input type='number' name='cout' style={{width:'50px'}} value={this.state.cout || 0} onChange={this.gererModification}></input> :this.state.cout}</td>
+                    <td>{this.state.modifier && !this.state.estClient && this.state.etat ? <input type='number'min="0" name='cout' style={{width:'50px'}} value={this.state.cout || 0} onChange={this.gererModification}></input> :this.state.cout}</td>
                     <td>{(this.state.modifier || this.state.supprimer) && !this.state.estClient ? (<textarea value={this.state.commentaire} name='commentaire' onChange={this.gererModification} required />):this.state.commentaire}</td>
                     {this.state.estClient && !this.state.estPayer && this.state.etat &&
                     <>
@@ -115,7 +115,7 @@ class Rdv extends Component
                     </>
                     }
 
-                    {this.state.cout != 0 && this.state.estClient && !this.state.estPayer && this.state.confirmer &&
+                    {this.state.cout != 0 && this.state.estClient && !this.state.estPayer && this.state.confirmer && this.state.etat &&
                         <button onClick={() => this.state.ouvrirDialogPaiment(this.state.rdvId)}>Payer</button>
                     }
                     {!this.state.estClient && !this.state.confirmer &&

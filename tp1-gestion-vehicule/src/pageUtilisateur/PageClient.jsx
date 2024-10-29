@@ -192,9 +192,9 @@ class PageClient extends Component
                     <div className='dialog-paiment-contenu'>
                     <h3>Entrez les informations de paiement</h3>
                     <form onSubmit={this.gererPaiment}>
-                    <input type="text" name="numero" placeholder="0000000000000000" defaultValue={this.props.user.id === this.props.infoPaiment.idClient && this.props.infoPaiment? this.props.infoPaiment.numero: ""}required pattern="\d{16}"/>
-                        <input type="text" name="expiration" placeholder="MM/YY" defaultValue={this.props.user.id === this.props.infoPaiment.idClient && this.props.infoPaiment? this.props.infoPaiment.expiration: ""} required pattern="^(0[1-9]|1[0-2])/(\d{2})$"/>
-                        <input type="text" name="cvv"placeholder="123" defaultValue={this.props.user.id === this.props.infoPaiment.idClient && this.props.infoPaiment? this.props.infoPaiment.cvv:""} required pattern="\d{3}"/>
+                    <input type="text" name="numero" placeholder="0000000000000000" defaultValue={this.props.infoPaiment && this.props.user.id === this.props.infoPaiment.idClient ? this.props.infoPaiment.numero: ""}required pattern="\d{16}"/>
+                        <input type="text" name="expiration" placeholder="MM/YY" defaultValue={this.props.infoPaiment && this.props.user.id === this.props.infoPaiment.idClient ? this.props.infoPaiment.expiration: ""} required pattern="^(0[1-9]|1[0-2])/(\d{2})$"/>
+                        <input type="text" name="cvv"placeholder="123" defaultValue={this.props.infoPaiment && this.props.user.id === this.props.infoPaiment.idClient ? this.props.infoPaiment.cvv:""} required pattern="\d{3}"/>
                         <input type='checkbox' id='enregistrer' name='enregistrer'/>
                         <label htmlFor="enregistrer">Enregistrer les informations de paiement</label>
                         <button type="submit">Confirmer le paiement</button>
