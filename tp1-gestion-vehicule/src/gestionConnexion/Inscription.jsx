@@ -24,6 +24,7 @@ const PageInscription = () =>
             {
                 lastName: donneeFormulaire.get('nom'),
                 firstName: donneeFormulaire.get('prenom'),
+                username: donneeFormulaire.get('nomUsager'),
                 email: donneeFormulaire.get('courriel'),
                 phone: donneeFormulaire.get('tel'),
                 address: { adresse: donneeFormulaire.get('adresse') },
@@ -60,7 +61,8 @@ const PageInscription = () =>
             <form onSubmit={gererSoumission}>
                 <input type="text" name='nom' placeholder="Nom" required />
                 <input type="text" name='prenom' placeholder="Prénom" required />
-                <input type="email"name='courriel' placeholder="Adresse e-mail" required />
+                <input type="text" name='nomUsager' placeholder="Nom d'utilisateur" required></input>
+                <input type="email"name='courriel' placeholder="Adresse courriel" required />
                 <input type="tel"  name='tel'placeholder="Numéro de téléphone" required />
                 <input type="text" name='adresse' placeholder="Adresse" required />
                 <input type="password" name='mdp'placeholder="Mot de passe" required />
