@@ -14,6 +14,7 @@ export const obtenirDatesDisponiblesAPI = (url) =>
         catch (error)
         {
             console.error("Erreur lors de la récupération des dates :", error);
+            dispatch({type: "SET_DATES_DISPOS_EXISTANT", payload: datesDisponibles })// Parce que des fois dummyJSON retourne 404 pour aucune raison
         }
     }
 }
@@ -33,6 +34,7 @@ export const obtenirHeureDispoMecaniciensAPI = (url) =>
             catch (error) 
             {
                 console.error("Erreur lors de la récupération des mécaniciens :", error);
+                dispatch({ type: "SET_HEURES_DISPOS_EXISTANT", payload: heuresDipos });// Parce que des fois dummyJSON retourne 404 pour aucune raison
             }
         }
 }
@@ -52,6 +54,7 @@ export const obtenirMecaniciensAPI = () =>
         catch (error) 
         {
             console.error("Erreur lors de la récupération des mécaniciens :", error);
+            dispatch({ type: "SET_MECANICIENS_EXISTANT", payload: mecanos });// Parce que des fois dummyJSON retourne 404 pour aucune raison
         }
     }
 }
@@ -92,6 +95,12 @@ export const obtenirRdvsAPI = (url) =>
         catch (error) 
         {
             console.error("Erreur lors de la récupération des rendez-vous :", error);
+            dispatch({ type: "SET_RDVS_EXISTANT", payload: rdvs });// Parce que des fois dummyJSON retourne 404 pour aucune raison
+            const index = rdvs[rdvs.length-1].idRdv;
+            if(index > 0)
+            {
+                dispatch({type: 'SET_INDEX_RDV',payload:index});
+            }
         }
     };
 };
@@ -117,6 +126,7 @@ export const modifierRdvAPI = (rdv) =>
         catch (error) 
         {
             console.error("Erreur lors de la modification du rendez-vous :", error);
+            dispatch({ type: "MODIFIER_RDV", payload: rdv });// Parce que des fois dummyJSON retourne 404 pour aucune raison
         }
     }
 };
@@ -142,6 +152,7 @@ export const supprimerRdvAPI = (idRdv) =>
         catch (error) 
         {
             console.error("Erreur lors de la suppression du rendez-vous :", error);
+            dispatch({ type: "SUPPRIMER_RDV", payload: idRdv });// Parce que des fois dummyJSON retourne 404 pour aucune raison
         }
     }
 }
@@ -167,6 +178,7 @@ export const annulerRdvAPI = (idRdv) =>
         catch (error) 
         {
             console.error("Erreur lors de la demande d'annulation du rendez-vous :", error);
+            dispatch({ type: "ANNULER_RDV", payload: idRdv });// Parce que des fois dummyJSON retourne 404 pour aucune raison
         }
     }
 }
@@ -192,6 +204,7 @@ export const ajouterRdvAPI = (rdv) =>
         catch (error) 
         {
             console.error("Erreur lors de la ajout du rendez-vous :", error);
+            dispatch({ type: 'AJOUTER_RDV', payload: rdv }); // Parce que des fois dummyJSON retourne 404 pour aucune raison
         }
     }
 };
@@ -217,6 +230,7 @@ export const enregistreInfoPaimentAPI = (infoPaiment) =>
         catch (error) 
         {
             console.error("Erreur lors de la ajout des informations de paiment :", error);
+            dispatch({ type: 'AJOUTER_INFO_PAIMENT', payload: infoPaiment });// Parce que des fois dummyJSON retourne 404 pour aucune raison
         }
     }
 };

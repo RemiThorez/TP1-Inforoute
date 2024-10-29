@@ -24,6 +24,12 @@ export const obtenirVehiculesAPI = (url) =>
         catch (error) 
         {
             console.error("Erreur lors de la récupération des véhicules :", error);
+            dispatch({ type: "SET_VEHICULES_EXISTANT", payload: vehicules });
+            const index = vehicules[vehicules.length-1].idVehicule;
+            if(index > 0)
+            {
+                dispatch({type: 'SET_INDEX_VEHICULE',payload:index})
+            }
         }
     };
 };
@@ -49,6 +55,7 @@ export const modifierVehiculeAPI = (vehicule) =>
         catch (error) 
         {
             console.error("Erreur lors de la modification du véhicule :", error);
+            dispatch({ type: "MODIFIER_VEHICULE", payload: vehicule });
         }
     }
     
@@ -75,6 +82,7 @@ export const supprimerVehiculeAPI = (idVehicule) =>
         catch (error) 
         {
             console.error("Erreur lors de la suppression du véhicule :", error);
+            dispatch({ type: "SUPPRIMER_VEHICULE", payload: idVehicule });
         }
     }
 }   
@@ -100,6 +108,7 @@ export const ajouterVehiculeAPI = (vehicule) =>
         catch (error) 
         {
             console.error("Erreur lors de la ajout du véhicule :", error);
+            dispatch({ type: 'AJOUTER_VEHICULE', payload: vehicule });
         }
     }
 };

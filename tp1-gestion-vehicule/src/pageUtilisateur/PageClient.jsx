@@ -159,11 +159,14 @@ class PageClient extends Component
             this.setState({message: "Modification du profil réussi !",erreur:false});
         }
 
-        utilisateur = {...this.props.user};
-        utilisateur.lastName = donneeFormulaire.get('nom');
-        utilisateur.firstName = donneeFormulaire.get('prenom');
-        utilisateur.tel = donneeFormulaire.get('tel');
-        utilisateur.adresse.adresse = donneeFormulaire.get('adresse');
+        utilisateur = {...this.props.user,
+            lastName: donneeFormulaire.get('nom'),
+            firstName: donneeFormulaire.get('prenom'),
+            tel: donneeFormulaire.get('tel'),
+            adresse:{adresse: donneeFormulaire.get('adresse')}
+        };
+       
+        
 
         this.props.setUser(utilisateur);
     };
