@@ -28,6 +28,11 @@ class PageClient extends Component
         this.obtenirMecanicien();
     };
 
+    componentWillUnmount()
+    {
+        this.props.detruireUser();
+    };
+
     obtenirMecanicien = () =>
     {
         this.props.obtenirMecaniciensAPI();
@@ -377,6 +382,7 @@ const mapDispatchToProps = (dispatch) => ({
     enregistreInfoPaimentAPI: (infoPaiment) => dispatch(enregistreInfoPaimentAPI(infoPaiment)),
     effectuerPaimentAPI: (infoPaiment, idMecanicien) => dispatch(effectuerPaimentAPI(infoPaiment, idMecanicien)),
     obtenirMecaniciensAPI: () => dispatch(obtenirMecaniciensAPI()),
+    detruireUser: () =>  dispatch({type: 'DETRUIRE_USER'}),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(PageClient);

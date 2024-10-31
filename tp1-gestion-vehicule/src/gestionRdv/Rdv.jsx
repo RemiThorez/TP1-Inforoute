@@ -138,13 +138,9 @@ class Rdv extends Component
     }
 }
 
-const mapStateToProps = (state) => ({
-    cacher: state.cacher,
-});
-
 const mapDispatchToProps = (dispatch) => ({
     modifierRdvAPI: (rdv) => dispatch(modifierRdvAPI(rdv)),
     annulerRdvAPI: (rdvId) => dispatch(annulerRdvAPI(rdvId)),
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(Rdv);
+export default connect(null,mapDispatchToProps)(Rdv);

@@ -81,6 +81,8 @@ const reducer = (state = etatInitial,action) =>
             return{...state, infoPaiment:action.payload};
         case "SET_ESTPAYER":
             return{...state, rdvs:state.rdvs.map(rdv => rdv.rdvId === action.payload ? { ...rdv,estPayer: true }: rdv)}
+        case "DETRUIRE_USER":
+            return{...state, user:null};
         default:
             return state;
     }

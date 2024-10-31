@@ -22,6 +22,10 @@ class GestionVehicule extends Component
         this.manufactureVehicule = new ManufactureVehicule(this.props.dispatch);
     }
 
+    componentWillUnmount()
+    {
+        this.props.afficher();
+    }
 
     gererBtnAjouterVehicule = () =>
     {

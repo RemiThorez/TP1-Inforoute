@@ -18,6 +18,11 @@ class PageMecanicien extends Component
         };
     }
 
+    componentWillUnmount()
+    {
+        this.props.detruireUser();
+    };
+
     calculerBenefice = (e) =>
     {
         const totalCouts = this.props.rdvs.reduce((total, rdv) => total + (typeof rdv.cout === 'number' ? rdv.cout : parseFloat(rdv.cout) || 0), 0);
@@ -183,6 +188,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     setUser: (user) => dispatch({type: 'SET_USER',payload:user}),
+    detruireUser: () =>  dispatch({type: 'DETRUIRE_USER'}),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(PageMecanicien);
