@@ -1,3 +1,13 @@
 from django.test import TestCase
 
-# Create your tests here.
+
+def obtenirInfoVehicule():
+    
+def obtenirVehiculeClient():
+    
+def ajouter():
+    
+def modifier():
+    
+def supprimer():
+    

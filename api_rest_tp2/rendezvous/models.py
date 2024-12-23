@@ -13,4 +13,5 @@ class Rendezvous(models.model):
     heure = models.IntegerField()
     duree = models.IntegerField()
     commentaire = models.TextField()
+    cout = models.FloatField()
     
