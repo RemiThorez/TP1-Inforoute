@@ -49,7 +49,9 @@ def obtenir(requete,idClient):
 def supprimer(requete,idClient):
     try:
         client = Client.objects.get(id=idClient)
+        user = client.user
         client.delete()
+        user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     except Client.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -171,7 +173,7 @@ def modifier(requete):
 
 @swagger_auto_schema(
     method='post',
-    request_body=ClientSerializer,
+    request_body=NouveauClientSerializer,
     operation_description="Création d'un client",
     responses={201: "OK", 400: "Bad request", 404: "Client not found", 500: "Internal Server Error"}
 )
