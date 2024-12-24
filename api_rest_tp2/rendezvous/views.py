@@ -9,7 +9,7 @@ from client.models import Client
 from client.permissions import EstClient
 from mecanicien.permissions import EstMecanicien
 from mecanicien.models import Mecanicien
-from .serializers import RendezvousSerializer
+from .serializers import RendezvousSerializer,NouveauRendezvousSerializer
 
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -53,7 +53,7 @@ def obtenirRendezvousMecanicien(requete, idMecanicien):
 
 @swagger_auto_schema(
     method='post',
-    request_body=RendezvousSerializer,
+    request_body=NouveauRendezvousSerializer,
     responses={201: RendezvousSerializer, 400: "Bad Request"}
 )
 @api_view(['POST'])
@@ -61,7 +61,7 @@ def obtenirRendezvousMecanicien(requete, idMecanicien):
 @permission_classes([IsAuthenticated, EstClient])
 def ajouter(requete):
     data = requete.data
-    serializer = RendezvousSerializer(data=data)
+    serializer = NouveauRendezvousSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -8,7 +8,7 @@ from .models import Vehicule
 from client.models import Client
 from client.permissions import EstClient, EstProprietaireVehicule
 from mecanicien.models import Mecanicien
-from .serializers import VehiculeSerializer
+from .serializers import VehiculeSerializer,NouveauVehiculeSerializer
 
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -52,7 +52,7 @@ def obtenirVehiculeClient(requete, idClient):
 
 @swagger_auto_schema(
     method='post',
-    request_body=VehiculeSerializer,
+    request_body=NouveauVehiculeSerializer,
     responses={201: VehiculeSerializer, 400: "Bad Request"}
 )
 @api_view(['POST'])
@@ -60,7 +60,7 @@ def obtenirVehiculeClient(requete, idClient):
 @permission_classes([IsAuthenticated, EstClient])
 def ajouter(requete):
     data = requete.data
-    serializer = VehiculeSerializer(data=data)
+    serializer = NouveauVehiculeSerializer(data=data)
 
     if serializer.is_valid():
         serializer.save()

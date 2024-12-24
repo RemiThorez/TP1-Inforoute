@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 
 from .models import Mecanicien
 from mecanicien.permissions import EstMecanicien
-from .serializers import MecanicienSerializer,MecanicienSerializerNoMdp
+from .serializers import MecanicienSerializer,MecanicienSerializerNoMdp,NouveauMecanicienSerializer
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -168,7 +168,7 @@ def modifier(requete):
     
 @swagger_auto_schema(
     method='post',
-    request_body=MecanicienSerializer,
+    request_body=NouveauMecanicienSerializer,
     operation_description="Création d'un mecanicien",
     responses={201: "OK", 400: "Bad request", 404: "Mecanicien not found", 500: "Internal Server Error"}
 )

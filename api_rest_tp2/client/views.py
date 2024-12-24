@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 
 from .models import Client
 from client.permissions import EstClient
-from .serializers import ClientSerializer,ClientSerializerNoMDP
+from .serializers import ClientSerializer,ClientSerializerNoMDP,NouveauClientSerializer
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
