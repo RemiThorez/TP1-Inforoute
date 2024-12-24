@@ -36,18 +36,8 @@ ALLOWED_HOSTS = []
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-}
-
-
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
 INSTALLED_APPS = [
@@ -60,10 +50,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'client.apps.ClientConfig',
-    'facture.apps.FactureConfig',
     'mecanicien.apps.MecanicienConfig',
     'rendezvous.apps.RendezvousConfig',
     'vehicule.apps.VehiculeConfig',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +71,7 @@ ROOT_URLCONF = 'api_rest_tp2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.paht.join(BASE_DIR, "templates")],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -96,6 +86,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api_rest_tp2.wsgi.application'
 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

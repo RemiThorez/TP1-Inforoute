@@ -11,56 +11,84 @@
 </head>
 <body>
     <div class="container my-5">
-        <h1 class="text-center mb-4">Statistiques Globales</h1>
+        <h1 class="text-center mb-4">Statistiques</h1>
         <div class="row">
             <!-- Total Clients -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card text-white bg-primary mb-3">
                     <div class="card-body">
                         <h5 class="card-title"><i class="fas fa-users"></i> Total Clients</h5>
-                        <p class="card-text display-4">{{ total_clients }}</p>
+                        <p class="card-text display-4">{{ nbsClient }}</p>
                     </div>
                 </div>
             </div>
             <!-- Total Mécaniciens -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card text-white bg-success mb-3">
                     <div class="card-body">
                         <h5 class="card-title"><i class="fas fa-tools"></i> Total Mécaniciens</h5>
-                        <p class="card-text display-4">{{ total_mechanics }}</p>
+                        <p class="card-text display-4">{{ nbsMecanicien }}</p>
                     </div>
                 </div>
             </div>
             <!-- Total Rendez-vous -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card text-white bg-warning mb-3">
                     <div class="card-body">
                         <h5 class="card-title"><i class="fas fa-calendar-check"></i> Total Rendez-vous</h5>
-                        <p class="card-text display-4">{{ total_appointments }}</p>
+                        <p class="card-text display-4">{{ nbsRendezvous }}</p>
                     </div>
                 </div>
             </div>
+             <!-- Total Véhicules -->
+        <div class="col-md-3">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-car"></i> Total Véhicules</h5>
+                    <p class="card-text display-4">{{ nbsVehicule }}</p>
+                </div>
+            </div>
         </div>
-
+        </div>
+       
         <div class="row">
             <!-- Rendez-vous Validés -->
             <div class="col-md-6">
                 <div class="card text-white bg-info mb-3">
                     <div class="card-body">
                         <h5 class="card-title"><i class="fas fa-check-circle"></i> Rendez-vous Validés</h5>
-                        <p class="card-text display-4">{{ validated_appointments }}</p>
+                        <p class="card-text display-4">{{ nbsRdvConfirmer }}</p>
                     </div>
                 </div>
             </div>
-            <!-- Total Véhicules -->
+            <!-- Rendez-vous Validés -->
             <div class="col-md-6">
-                <div class="card text-white bg-secondary mb-3">
+                <div class="card text-white bg-info mb-3">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-car"></i> Total Véhicules</h5>
-                        <p class="card-text display-4">{{ total_vehicles }}</p>
+                        <h5 class="card-title"><i class="fa-solid fa-xmark"></i> Rendez-vous annulés</h5>
+                        <p class="card-text display-4">{{ nbsRdvAnnuler }}</p>
                     </div>
                 </div>
             </div>
+            <!-- Rendez-vous Validés -->
+            <div class="col-md-6">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Rendez-vous en attente</h5>
+                        <p class="card-text display-4">{{ nbsRdvEnAttente }}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Rendez-vous Validés -->
+            <div class="col-md-6">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-check-circle"></i> Rendez-vous payés</h5>
+                        <p class="card-text display-4">{{ nbsRdvPayer }}</p>
+                    </div>
+                </div>
+            </div>
+            
         </div>
 
         <div class="row">
@@ -69,7 +97,7 @@
                 <div class="card text-white bg-danger mb-3">
                     <div class="card-body">
                         <h5 class="card-title"><i class="fas fa-dollar-sign"></i> Total Paiements</h5>
-                        <p class="card-text display-4">{{ total_payments }}</p>
+                        <p class="card-text display-4">{{ totalPaiments }}</p>
                     </div>
                 </div>
             </div>
