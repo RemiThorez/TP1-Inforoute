@@ -43,7 +43,7 @@ def obtenir(requete,idMecanicien):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def obtenir(requete):
+def obtenirTout(requete):
     try:
         mecanicien = Mecanicien.objects
         mecanicien_serializer = MecanicienSerializerNoMdp(mecanicien, many=True)
