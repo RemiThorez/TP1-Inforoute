@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App';
-import PageInscription from './gestionConnexion/inscription';
+import PageInscription from './gestionConnexion/Inscription';
 import PageClient from './pageUtilisateur/PageClient';
 import PageMecanicien from './pageUtilisateur/PageMecanicien';
 import { Provider } from 'react-redux';
 import store from './store';
-import PageConnexionClient from './gestionConnexion/connexionClient';
-import PageConnexionMecanicien from './gestionConnexion/connexionMecanicien';
+import PageConnexionClient from './gestionConnexion/ConnexionClient';
+import PageConnexionMecanicien from './gestionConnexion/ConnexionMecanicien';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

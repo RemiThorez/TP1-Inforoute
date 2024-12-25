@@ -1,33 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-const loadFromLocalStorage = () => {
-    try {
-        const serializedState = localStorage.getItem('appState');
-        return serializedState ? JSON.parse(serializedState) : undefined;
-    } catch (error) {
-        console.error("Could not load state from localStorage", error);
-        return undefined;
-    }
-};
-
-const saveToLocalStorage = (state) => {
-    try {
-        const serializedState = JSON.stringify(state);
-        localStorage.setItem('appState', serializedState);
-    } catch (error) {
-        console.error("Could not save state to localStorage", error);
-    }
-};
-
-
-const etatInitial = loadFromLocalStorage() ||
+const etatInitial =
 {
     cacher: false,
     supprimer: false,
     vehicules: [],
     rdvs: [],
-    indexRdv: 0,
-    indexVehicule: 0,
     user: null,
     mecaniciens: [],
     heuresDispos: [],
@@ -49,10 +27,6 @@ const reducer = (state = etatInitial,action) =>
             return{...state, vehicules: state.vehicules.filter(v=> v.idVehicule !== action.payload)};
         case "MODIFIER_VEHICULE":
             return {...state,vehicules: state.vehicules.map(v => v.idVehicule === action.payload.idVehicule ? { ...v, ...action.payload }: v)};
-        case "SET_INDEX_VEHICULE":
-            return{...state, indexVehicule:action.payload+1};
-        case "SET_INDEX_RDV":
-            return{...state, indexRdv:action.payload+1};
         case "SET_USER":
             return{...state, user:action.payload};
         case "SET_VEHICULES_EXISTANT":
@@ -88,15 +62,9 @@ const reducer = (state = etatInitial,action) =>
     }
 };
 
-const localStorageMiddleware = store => next => action => {
-    const result = next(action);
-    saveToLocalStorage(store.getState());
-    return result;
-};
-
 const store = configureStore({
     reducer:reducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(localStorageMiddleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 
 export default store;

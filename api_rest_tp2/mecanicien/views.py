@@ -35,6 +35,22 @@ def obtenir(requete,idMecanicien):
         return Response(mecanicien_serializer.data, status=status.HTTP_200_OK)
     except Mecanicien.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
+@swagger_auto_schema(
+    method='get',
+    responses={200: MecanicienSerializerNoMdp, 404: "Not found"}
+)
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def obtenir(requete):
+    try:
+        mecanicien = Mecanicien.objects
+        mecanicien_serializer = MecanicienSerializerNoMdp(mecanicien, many=True)
+        return Response(mecanicien_serializer.data, status=status.HTTP_200_OK)
+    except Mecanicien.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 @swagger_auto_schema(
     method='delete',

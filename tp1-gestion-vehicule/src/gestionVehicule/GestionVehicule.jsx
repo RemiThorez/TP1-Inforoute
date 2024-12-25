@@ -79,7 +79,7 @@ class GestionVehicule extends Component
         const modele = donneeFormulaire.get("modele");
         const annee = donneeFormulaire.get("annee");
 
-        this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,this.props.indexVehicule,this.props.user.id)
+        this.manufactureVehicule.CreerVehicule(fabricant,modele,annee,this.props.indexVehicule,this.props.user.id,this.props.user.jeton)
         this.setState({ajouterVehiculeActif: false});
         this.props.afficher();
     }
@@ -90,7 +90,7 @@ class GestionVehicule extends Component
         const donneeFormulaire = new FormData(e.target);
         const vin = donneeFormulaire.get("vin");
 
-        this.manufactureVehicule.CreerVehiculeVIN(vin, this.props.indexVehicule,this.props.user.id)
+        this.manufactureVehicule.CreerVehiculeVIN(vin, this.props.indexVehicule,this.props.user.id,this.props.user.jeton)
         this.setState({ajouterVehiculeVINActif: false});
         this.props.afficher();
     }
@@ -107,7 +107,7 @@ class GestionVehicule extends Component
         if(fabricant != "" && modele != "" && modele != 0)
         {
             //Ajout du véhicule
-            this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),this.props.indexVehicule,this.props.user.id);
+            this.manufactureVehicule.CreerVehicule(fabricant,modele,donneeFormulaire.get("annee"),this.props.indexVehicule,this.props.user.id,this.props.user.jeton);
             this.setState({ajouterVehiculeComplexeActif: false});
             this.props.afficher();
         

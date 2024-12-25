@@ -1,33 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './css/App.css';
-import { obtenirVehiculesAPI } from './actions/ActionsVehicules';
-import { obtenirRdvsAPI } from './actions/ActionsRdvs';
 
 const App = () => 
 {
-
-    const [initialiser, setInitialiser] = React.useState(false);
     const navigate = useNavigate();
-
-    useEffect(() => 
-    {
-        if (!initialiser) 
-        {
-            localStorage.clear();
-            initialisationApp();
-            setInitialiser(true);
-        }
-        initialisationApp();
-    }, 
-    [initialiser]);
-
-    const initialisationApp = () => 
-    {
-        console.log("Initialisation de l'application...");
-        //obtenirVehiculesAPI("https://dummyjson.com/c/c6e7-bec5-486f-9428");
-        //obtenirRdvsAPI("https://dummyjson.com/c/8e46-5801-45bc-8167");
-    };
 
     const gererBtnInscription=() =>
     {

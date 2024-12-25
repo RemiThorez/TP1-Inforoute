@@ -9,7 +9,7 @@ from client.models import Client
 from client.permissions import EstClient
 from mecanicien.permissions import EstMecanicien
 from mecanicien.models import Mecanicien
-from .serializers import RendezvousSerializer,NouveauRendezvousSerializer
+from .serializers import RendezvousSerializer,NouveauRendezvousSerializer,EnvoiInfoRendezvousSerializer
 
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -20,7 +20,7 @@ idClient = openapi.Parameter('idClient', openapi.IN_PATH, description="ID du cli
 @swagger_auto_schema(
     method='get',
     manual_parameters=[idClient],
-    responses={200: RendezvousSerializer(many=True), 500: "Erreur serveur interne"}
+    responses={200: EnvoiInfoRendezvousSerializer(many=True), 500: "Erreur serveur interne"}
 )
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
@@ -28,7 +28,7 @@ idClient = openapi.Parameter('idClient', openapi.IN_PATH, description="ID du cli
 def obtenirRendezvousClient(requete, idClient):
     try:
         rendezvous = Rendezvous.objects.filter(idVehicule__client_id=idClient)
-        serializer = RendezvousSerializer(rendezvous, many=True)
+        serializer = EnvoiInfoRendezvousSerializer(rendezvous, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -38,7 +38,7 @@ idMecanicien = openapi.Parameter('idMecanicien', openapi.IN_PATH, description="I
 @swagger_auto_schema(
     method='get',
     manual_parameters=[idMecanicien],
-    responses={200: RendezvousSerializer(many=True), 500: "Erreur serveur interne"}
+    responses={200: EnvoiInfoRendezvousSerializer(many=True), 500: "Erreur serveur interne"}
 )
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])

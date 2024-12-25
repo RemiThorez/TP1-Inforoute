@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { connect  } from 'react-redux';
-import { modifierRdvAPI,annulerRdvAPI } from '../actions/ActionsRdvs';
+import { modifierRdvAPIv } from '../actions/ActionsRdvs';
 
 class Rdv extends Component
 {   
@@ -37,8 +37,7 @@ class Rdv extends Component
     gererBtnAnnulerRdv = () =>
     {
         this.setState({confirmer: false, etat: false});
-        this.props.annulerRdvAPI(this.state.rdvId);
-        this.props.modifierRdvAPI({client: this.state.client, estPayer: this.state.estPayer,cout:this.state.cout, commentaire: this.state.commentaire, clientId: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,mecanicienId: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,rdvId: this.state.rdvId,etat: false,confirmer: false});
+        this.props.modifierRdvAPI({client: this.state.client, estPayer: this.state.estPayer,cout:this.state.cout, commentaire: this.state.commentaire, idClient: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,idMecanicien: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,id: this.state.rdvId,etat: false,confirmer: false},this.props.user.jeton);
     }
 
     gererBtnConfirmer = () =>
@@ -51,13 +50,13 @@ class Rdv extends Component
         else if(this.state.modifier)
         {
             this.setState({modifier: false});
-            this.props.modifierRdvAPI({client: this.state.client, estPayer: this.state.estPayer, cout:this.state.cout ,commentaire: this.state.commentaire,clientId: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,mecanicienId: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,rdvId: this.state.rdvId,etat: this.state.etat,confirmer: true});
+            this.props.modifierRdvAPI({client: this.state.client, estPayer: this.state.estPayer, cout:this.state.cout ,commentaire: this.state.commentaire,idClient: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,idMecanicien: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,id: this.state.rdvId,etat: this.state.etat,confirmer: true},this.props.user.jeton);
         }
     }
 
     gererEnvoiRefuser = () =>
     {
-        this.props.modifierRdvAPI({client: this.state.client, estPayer: this.state.estPayer,cout:this.state.cout, commentaire: this.state.commentaire, clientId: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,mecanicienId: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,rdvId: this.state.rdvId,etat: false,confirmer: true});
+        this.props.modifierRdvAPI({client: this.state.client, estPayer: this.state.estPayer,cout:this.state.cout, commentaire: this.state.commentaire, idClient: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,idMecanicien: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,id: this.state.rdvId,etat: false,confirmer: true},this.props.user.jeton);
     }
 
     gererBtnRefuser = () =>
@@ -84,7 +83,7 @@ class Rdv extends Component
     gererEnvoiModification = () =>
     {
         this.setState({modifier: false});
-        this.props.modifierRdvAPI({client: this.state.client, estPayer: this.state.estPayer, cout:this.state.cout ,commentaire: this.state.commentaire,clientId: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,mecanicienId: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,rdvId: this.state.rdvId,etat: this.state.etat,confirmer: false});
+        this.props.modifierRdvAPI({client: this.state.client, estPayer: this.state.estPayer, cout:this.state.cout ,commentaire: this.state.commentaire,idClient: this.state.clientId,idVehicule: this.state.idVehicule,infoVehicule: this.state.infoVehicule,besoins: this.state.besoins,mecanicien: this.state.mecanicien,idMecanicien: this.state.mecanicienId,date: this.state.date,heure: this.state.heure,duree: this.state.duree,id: this.state.rdvId,etat: this.state.etat,confirmer: false},this.props.user.jeton);
     }
 
     render()
@@ -138,9 +137,12 @@ class Rdv extends Component
     }
 }
 
+const mapStateToProps = (state) => ({
+    user: state.user,
+  });
+
 const mapDispatchToProps = (dispatch) => ({
-    modifierRdvAPI: (rdv) => dispatch(modifierRdvAPI(rdv)),
-    annulerRdvAPI: (rdvId) => dispatch(annulerRdvAPI(rdvId)),
+    modifierRdvAPI: (rdv,jeton) => dispatch(modifierRdvAPI(rdv,jeton)),
 });
 
-export default connect(null,mapDispatchToProps)(Rdv);
+export default connect(mapStateToProps,mapDispatchToProps)(Rdv);

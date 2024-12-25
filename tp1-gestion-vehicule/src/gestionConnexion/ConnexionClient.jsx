@@ -15,21 +15,21 @@ const PageConnexionClient = ({ setUser }) =>
 
         try 
         {
-            const reponse = await axios.post('https://dummyjson.com/users/login', 
+            const reponse = await axios.post('https://api-rest-tp2.onrender.com/client/connexion', 
             {
-                username: donneeFormulaire.get('username'),
-                password: donneeFormulaire.get('mdp')
+                nomUtilisateur: donneeFormulaire.get('username'),
+                mdp: donneeFormulaire.get('mdp')
             });
 
             if (reponse.status === 200) 
             {
                 try 
                 {
-                    const reponsInfoSupp = await axios.get(`https://dummyjson.com/users/${reponse.data.id}`);
+                    const reponsInfoSupp = await axios.get(`https://api-rest-tp2.onrender.com/client/obtenir/${reponse.data.idClient}`);
 
                     if (reponsInfoSupp.status === 200)
                     {
-                        const infoSupplementaire = {adresse:{adresse: reponsInfoSupp.data.address.address}, tel: reponsInfoSupp.data.phone};
+                        const infoSupplementaire = {adresse:reponsInfoSupp.data.adresse, tel: reponsInfoSupp.data.tel, firstname:reponsInfoSupp.data.first_name,lastname:reponsInfoSupp.data.last_name,username:reponsInfoSupp.data.username,email:reponsInfoSupp.data.email};
                         const utilisateurComplet = 
                         {
                             ...reponse.data,

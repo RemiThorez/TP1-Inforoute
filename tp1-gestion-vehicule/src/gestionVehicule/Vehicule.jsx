@@ -21,7 +21,7 @@ class Vehicule extends Component
     
     gererBtnSupprimerVehicule = () =>
     {
-        this.props.supprimerVehiculeAPI(this.state.idVehicule);
+        this.props.supprimerVehiculeAPI({fabricant: this.state.fabricant, modele: this.state.modele, annee: this.state.annee, id: this.state.idVehicule,idClient: this.props.user.id},this.props.user.jeton);;
     }
 
     modifierEtatFormulaire = (e) =>
@@ -31,7 +31,7 @@ class Vehicule extends Component
         if(this.props.cacher)
         {
             this.props.afficher();
-            this.props.modifierVehiculeAPI({fabricant: this.state.fabricant, modele: this.state.modele, annee: this.state.annee, idVehicule: this.state.idVehicule,});
+            this.props.modifierVehiculeAPI({fabricant: this.state.fabricant, modele: this.state.modele, annee: this.state.annee, id: this.state.idVehicule,idClient: this.props.user.id},this.props.user.jeton);
         }
         else
         {
@@ -87,6 +87,7 @@ class Vehicule extends Component
 
 const mapStateToProps = (state) => ({
     cacher: state.cacher,
+    user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

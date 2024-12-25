@@ -4,6 +4,7 @@ from rest_framework import routers
 
 urlpatterns =[
     path(r"obtenir/<int:idMecanicien>",obtenir,name="obtenir-mecanicien"),
+    path(r"obtenir/",obtenir,name="obtenir-mecaniciens"),
     path(r"ajouter/",ajouter,name="ajouter-mecanicien"),
     path(r"supprimer/<int:idMecanicien>",supprimer,name="supprimer-mecanicien"),
     path(r"modifier/",modifier,name="modifier-mecanicien"),

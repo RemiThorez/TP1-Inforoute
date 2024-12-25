@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Rdv from '../gestionRdv/Rdv';
 import { connect } from 'react-redux';
+import { obtenirRdvsAPI } from '../actions/ActionsRdvs';
 import axios from 'axios';
 
 class PageMecanicien extends Component
@@ -16,6 +17,7 @@ class PageMecanicien extends Component
             erreur: false,
             benefices:0,
         };
+        this.obtenirRdvsAPI(false,this.props.user.id,this.props.user.jeton)
     }
 
     componentWillUnmount()
@@ -42,13 +44,13 @@ class PageMecanicien extends Component
             const donneeFormulaire = new FormData(e.target);
             
             let utilisateur = {
-                lastName: donneeFormulaire.get('nom'),
-                firstName: donneeFormulaire.get('prenom'),
-                phone: donneeFormulaire.get('tel'),
-                address: { adresse: donneeFormulaire.get('adresse') },
+                last_name: donneeFormulaire.get('nom'),
+                first_name: donneeFormulaire.get('prenom'),
+                tel: donneeFormulaire.get('tel'),
+                adresse: donneeFormulaire.get('adresse'),
             };
     
-            const reponse = await axios.patch(`https://dummyjson.com/users/${this.props.user.id}`,utilisateur);
+            const reponse = await axios.patch(`https://api-rest-tp2.onrender.com/mecanicien/modifier/`,utilisateur);
     
             if(reponse.status !== 200)
             {
@@ -189,6 +191,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     setUser: (user) => dispatch({type: 'SET_USER',payload:user}),
     detruireUser: () =>  dispatch({type: 'DETRUIRE_USER'}),
+    obtenirRdvsAPI: (estClient,id, jeton)=> dispatch(obtenirRdvsAPI(estClient,id, jeton)),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(PageMecanicien);

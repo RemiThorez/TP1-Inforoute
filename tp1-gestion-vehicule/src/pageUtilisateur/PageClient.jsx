@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Calendar from 'react-calendar';
 import GestionVehicule from '../gestionVehicule/GestionVehicule';
 import { connect } from 'react-redux';
-import { obtenirMecaniciensAPI, obtenirHeureDispoMecaniciensAPI,obtenirDatesDisponiblesAPI,ajouterRdvAPI,effectuerPaimentAPI,enregistreInfoPaimentAPI } from '../actions/ActionsRdvs';
+import { obtenirMecaniciensAPI, obtenirHeureDispoMecaniciensAPI,ajouterRdvAPI,effectuerPaimentAPI,enregistreInfoPaimentAPI,obtenirRdvsAPI } from '../actions/ActionsRdvs';
+import { obtenirVehiculesAPI } from '../actions/ActionsVehicules';
 import Rdv from '../gestionRdv/Rdv';
 import axios from 'axios';
 import '../css/App.css';
@@ -21,6 +22,9 @@ class PageClient extends Component
             dialogPaimentOuvert: false,
             rdvId:-1,
         };
+
+        this.obtenirVehiculesAPI(this.props.user.id,this.props.user.jeton)
+        this.obtenirRdvsAPI(true,this.props.user.id,this.props.user.jeton)
     }
 
     componentDidMount()
@@ -35,7 +39,7 @@ class PageClient extends Component
 
     obtenirMecanicien = () =>
     {
-        this.props.obtenirMecaniciensAPI();
+        this.props.obtenirMecaniciensAPI(this.props.user.jeton);
     };
 
     ouvrirDialogPaiment = (rdvId) => 
@@ -78,10 +82,7 @@ class PageClient extends Component
 
     obtenirHoraireDispos()
     {
-        let url = "https://dummyjson.com/c/f3cc-3442-4c30-b4a0"; //Avec notre "vrai" api nous ajouterions l'id du mécaniciens pour obtenir seulement son horaire spécifique
-        this.props.obtenirHeureDispoMecaniciensAPI(url);
-        url = "https://dummyjson.com/c/744a-1dde-457f-acff" //Avec notre "vrai" api nous ajouterions l'id du mécaniciens pour obtenir seulement son horaire spécifique
-        this.props.obtenirDatesDisponiblesAPI(url);
+        this.props.obtenirHeureDispoMecaniciensAPI();
     };
 
     gererChangementMecanicien = () =>
@@ -99,7 +100,7 @@ class PageClient extends Component
         {
             const vehicule = this.props.vehicules.find(v => v.idVehicule == donneeFormulaire.get("vehicule"));
             const rdv = {
-                client:this.props.user.firstName,
+                client:this.props.user.firstname,
                 clientId:this.props.user.id,
                 idVehicule:donneeFormulaire.get("vehicule"),
                 infoVehicule: vehicule.fabricant + ", " +vehicule.modele +", " +vehicule.annee,
@@ -131,7 +132,7 @@ class PageClient extends Component
     gererChangementDate = (date) => 
     {
         const formattedDate = date.toISOString().split('T')[0];
-        if(this.props.datesDisponibles.map(date => date.date).includes(formattedDate))
+        if(!this.props.datesDisponibles.map(date => date.date).includes(formattedDate)) // Desactiver
         {
             this.setState({dateSelectionnee: date, message: ""});
         }
@@ -147,13 +148,14 @@ class PageClient extends Component
         const donneeFormulaire = new FormData(e.target);
         
         let utilisateur = {
-            lastName: donneeFormulaire.get('nom'),
-            firstName: donneeFormulaire.get('prenom'),
-            phone: donneeFormulaire.get('tel'),
-            address: { adresse: donneeFormulaire.get('adresse') },
+            idClient:this.props.user.id,
+            last_name: donneeFormulaire.get('nom'),
+            first_name: donneeFormulaire.get('prenom'),
+            tel: donneeFormulaire.get('tel'),
+            adresse: donneeFormulaire.get('adresse'),
         };
 
-        const reponse = await axios.patch(`https://dummyjson.com/users/${this.props.user.id}`,utilisateur);
+        const reponse = await axios.patch(`https://api-rest-tp2.onrender.com/client/modifier/`,utilisateur);
 
         if(reponse.status !== 200)
         {
@@ -165,14 +167,12 @@ class PageClient extends Component
         }
 
         utilisateur = {...this.props.user,
-            lastName: donneeFormulaire.get('nom'),
-            firstName: donneeFormulaire.get('prenom'),
+            lastname: donneeFormulaire.get('nom'),
+            firstname: donneeFormulaire.get('prenom'),
             tel: donneeFormulaire.get('tel'),
-            adresse:{adresse: donneeFormulaire.get('adresse')}
+            adresse: donneeFormulaire.get('adresse')
         };
        
-        
-
         this.props.setUser(utilisateur);
     };
 
@@ -183,9 +183,9 @@ class PageClient extends Component
         
         if (view === 'month' && !datesDiponibles.includes(formattedDate)) 
         {
-            return 'date-indisponible';
+            return 'date-disponible'; // On été inversé puisuqe toutes les dates sont disponibles maintenant
         }
-        return 'date-disponible';
+        return 'date-indisponible';
     }
 
     render() 
@@ -212,7 +212,7 @@ class PageClient extends Component
                 
 
                 <div>
-                    <h2>Bienvenue {this.props.user.firstName} {this.props.user.lastName} dans votre espace Client</h2>
+                <h2>Bienvenue {this.props.user.firstName} {this.props.user.lastName} dans votre espace Client</h2>
                     <p><strong>Téléphone :</strong> {this.props.user.tel || "Non disponible"}</p>
                     <p><strong>Adresse :</strong> {this.props.user.adresse?.adresse || "Non disponible"}</p>
                 </div>
@@ -377,6 +377,8 @@ const mapDispatchToProps = (dispatch) => ({
     setUser: (user) => dispatch({type: 'SET_USER',payload:user}),
     setEstPayer: (rdvId) => dispatch({type: 'SET_ESTPAYER',payload: rdvId}),
     obtenirHeureDispoMecaniciensAPI: (url) => dispatch(obtenirHeureDispoMecaniciensAPI(url)),
+    obtenirVehiculesAPI: (id, jeton) => dispatch(obtenirVehiculesAPI(id,jeton)),
+    obtenirRdvsAPI: (estClient,id, jeton)=> dispatch(obtenirRdvsAPI(estClient,id, jeton)),
     obtenirDatesDisponiblesAPI: (url) => dispatch(obtenirDatesDisponiblesAPI(url)),
     ajouterRdvAPI: (rdv) => dispatch(ajouterRdvAPI(rdv)),
     enregistreInfoPaimentAPI: (infoPaiment) => dispatch(enregistreInfoPaimentAPI(infoPaiment)),

@@ -20,17 +20,34 @@ const PageInscription = () =>
         
         try 
         {
-            const reponse = await axios.post('https://dummyjson.com/users/add', 
+            role = donneeFormulaire.get('role')
+            if (role === "client")
             {
-                lastName: donneeFormulaire.get('nom'),
-                firstName: donneeFormulaire.get('prenom'),
-                username: donneeFormulaire.get('nomUsager'),
-                email: donneeFormulaire.get('courriel'),
-                phone: donneeFormulaire.get('tel'),
-                address: { adresse: donneeFormulaire.get('adresse') },
-                password: donneeFormulaire.get('mdp'),
-                role: donneeFormulaire.get('role')
-            });
+                const reponse = await axios.post('https://api-rest-tp2.onrender.com/client/ajouter', 
+                {
+                    last_name: donneeFormulaire.get('nom'),
+                    first_name: donneeFormulaire.get('prenom'),
+                    username: donneeFormulaire.get('nomUsager'),
+                    email: donneeFormulaire.get('courriel'),
+                    tel: donneeFormulaire.get('tel'),
+                    adresse:donneeFormulaire.get('adresse'),
+                    password: donneeFormulaire.get('mdp'),
+                });
+            }
+            else if (role === "mecanicien")
+            {
+                const reponse = await axios.post('https://api-rest-tp2.onrender.com/mecanicien/ajouter', 
+                {
+                    last_name: donneeFormulaire.get('nom'),
+                    first_name: donneeFormulaire.get('prenom'),
+                    username: donneeFormulaire.get('nomUsager'),
+                    email: donneeFormulaire.get('courriel'),
+                    tel: donneeFormulaire.get('tel'),
+                    adresse:donneeFormulaire.get('adresse'),
+                    password: donneeFormulaire.get('mdp'),
+                });
+            }
+            
 
             if (reponse.status === 201) 
             {
