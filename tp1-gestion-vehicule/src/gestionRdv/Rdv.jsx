@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { connect  } from 'react-redux';
-import { modifierRdvAPIv } from '../actions/ActionsRdvs';
+import { modifierRdvAPI } from '../actions/ActionsRdvs';
 
 class Rdv extends Component
 {   

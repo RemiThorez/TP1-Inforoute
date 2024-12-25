@@ -50,7 +50,7 @@ export const obtenirRdvsAPI = (estClient,id,jeton) =>
     {
         try 
         {
-            const reponse = undefined;
+            let reponse = undefined;
             if(estClient)
             {
                 reponse = await axios.get(`https://api-rest-tp2.onrender.com/rendezvous/obtenirRendezvousClient/${id}`,
